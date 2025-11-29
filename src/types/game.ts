@@ -10,6 +10,7 @@ export interface PurchaseInfo {
 
 export interface IGame {
   _id?: string;
+  userId: string;
   title: string;
   platform: string;
   year?: number;

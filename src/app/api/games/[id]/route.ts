@@ -1,16 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import Game from "@/lib/models/game";
+import { auth } from "@/lib/auth";
 
-// GET /api/games/:id - Get a single game
+// GET /api/games/:id - Get a single game (must belong to authenticated user)
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await auth();
+    
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     await dbConnect();
     const { id } = await params;
-    const game = await Game.findById(id);
+    const game = await Game.findOne({ _id: id, userId: session.user.id });
     
     if (!game) {
       return NextResponse.json(
@@ -28,20 +38,36 @@ export async function GET(
   }
 }
 
-// PUT /api/games/:id - Update a game
+// PUT /api/games/:id - Update a game (must belong to authenticated user)
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await auth();
+    
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     await dbConnect();
     const { id } = await params;
     const body = await request.json();
     
-    const game = await Game.findByIdAndUpdate(id, body, {
-      new: true,
-      runValidators: true,
-    });
+    // Ensure userId cannot be changed
+    const { userId, ...updateData } = body;
+    
+    const game = await Game.findOneAndUpdate(
+      { _id: id, userId: session.user.id },
+      updateData,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
     
     if (!game) {
       return NextResponse.json(
@@ -59,15 +85,24 @@ export async function PUT(
   }
 }
 
-// DELETE /api/games/:id - Delete a game
+// DELETE /api/games/:id - Delete a game (must belong to authenticated user)
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await auth();
+    
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     await dbConnect();
     const { id } = await params;
-    const game = await Game.findByIdAndDelete(id);
+    const game = await Game.findOneAndDelete({ _id: id, userId: session.user.id });
     
     if (!game) {
       return NextResponse.json(

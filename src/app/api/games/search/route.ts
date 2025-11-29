@@ -2,10 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { searchGames, rawgToGameData } from "@/lib/rawg";
 import dbConnect from "@/lib/db";
 import GameCache from "@/lib/models/game-cache";
+import { auth } from "@/lib/auth";
 
 // GET /api/games/search?q=mario&platform=nes
 export async function GET(request: NextRequest) {
   try {
+    const session = await auth();
+    
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     const searchParams = request.nextUrl.searchParams;
     const query = searchParams.get("q");
     const platform = searchParams.get("platform");

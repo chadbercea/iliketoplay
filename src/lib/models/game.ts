@@ -9,6 +9,11 @@ const PurchaseInfoSchema = new Schema({
 
 const GameSchema = new Schema<IGame>(
   {
+    userId: {
+      type: String,
+      required: [true, "User ID is required"],
+      index: true,
+    },
     title: {
       type: String,
       required: [true, "Please provide a title for the game"],
