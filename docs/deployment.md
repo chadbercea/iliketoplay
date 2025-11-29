@@ -10,20 +10,78 @@
 
 ### Environment Variables
 
-**Required for Vercel:**
+**CRITICAL: Required for Production to Work**
 
-Add these in Vercel Dashboard → Settings → Environment Variables:
+The application requires TWO environment variables to function in production. Missing either will cause the app to break.
+
+#### How to Set Environment Variables in Vercel
+
+1. Go to https://vercel.com/dashboard
+2. Select your project (`iliketoplay`)
+3. Navigate to: **Settings → Environment Variables**
+4. Click "Add" button
+5. For each variable below:
+   - Enter the variable name
+   - Enter the value
+   - Select: **Production, Preview, AND Development**
+   - Click "Save"
+6. After adding both variables: **Settings → Deployments → [latest deployment] → "Redeploy"**
+
+#### Required Variables
+
+**1. MONGODB_URI** (Database Connection)
 
 ```
-MONGODB_URI=mongodb+srv://iliketoplay-admin:PASSWORD@iliketoplay-dev.pljnw6d.mongodb.net/iliketoplay?retryWrites=true&w=majority&appName=iliketoplay-dev
+mongodb+srv://iliketoplay-admin:PASSWORD@iliketoplay-dev.pljnw6d.mongodb.net/?appName=iliketoplay-dev
 ```
 
 Replace `PASSWORD` with your actual MongoDB Atlas password.
 
-**Security Notes:**
+**What happens if missing:**
+- GET /api/games returns 500 error
+- POST /api/games returns 400 error  
+- Error: `connect ECONNREFUSED 127.0.0.1:27017`
+- App stuck on "Loading games..."
+
+---
+
+**2. RAWG_API_KEY** (Game Data API)
+
+```
+your_32_character_api_key_here
+```
+
+Get your free API key from https://rawg.io/apidocs (20,000 requests/month free)
+
+**What happens if missing:**
+- GET /api/games/search returns 503 error
+- Search shows: "RAWG API not configured. Please use manual entry."
+- Can only add games manually (search doesn't work)
+
+---
+
+#### Verification
+
+After setting environment variables and redeploying:
+
+1. Visit https://iliketoplay.vercel.app/api/games
+   - Should return: `{"success":true,"data":[...]}`
+   - Should NOT return: 500 error or connection refused
+
+2. Visit https://iliketoplay.vercel.app/games/new
+   - Search for "Contra"
+   - Should return game results
+   - Should NOT show: "RAWG API not configured" error
+
+**See [production-verification.md](./production-verification.md) for complete testing checklist.**
+
+#### Security Notes
+
 - Never commit `.env.local` to GitHub (already in `.gitignore`)
-- Store production secrets only in Vercel dashboard
+- Never commit API keys or passwords to git
+- Store production secrets ONLY in Vercel dashboard
 - Use different MongoDB clusters for development and production (recommended)
+- Rotate credentials if accidentally exposed
 
 ### Deployment Steps
 
@@ -104,20 +162,49 @@ If a deployment fails:
 
 ### Troubleshooting
 
+**Production shows "Loading games..." forever:**
+- **Cause:** `MONGODB_URI` environment variable not set in Vercel
+- **Error in logs:** `connect ECONNREFUSED 127.0.0.1:27017`
+- **Fix:** Add `MONGODB_URI` in Vercel Settings → Environment Variables → Redeploy
+
+**Search shows "RAWG API not configured":**
+- **Cause:** `RAWG_API_KEY` environment variable not set in Vercel
+- **Error:** GET /api/games/search returns 503
+- **Fix:** Add `RAWG_API_KEY` in Vercel Settings → Environment Variables → Redeploy
+
+**POST /api/games returns 400 error:**
+- **Cause:** Database connection failed (missing `MONGODB_URI`)
+- **Fix:** Verify `MONGODB_URI` is set correctly in Vercel
+- **Test:** Run `curl https://your-domain.vercel.app/api/games` - should return 200, not 500
+
+**Environment variables not taking effect:**
+- **Cause:** Forgot to redeploy after adding environment variables
+- **Fix:** Go to Settings → Deployments → Latest → Click "Redeploy"
+- **Note:** Environment variable changes require redeployment to take effect
+
 **Build fails:**
 - Check Vercel build logs for errors
 - Verify all dependencies in `package.json`
 - Ensure Node.js version compatibility
+- Check for TypeScript errors
 
 **Database connection fails:**
-- Verify `MONGODB_URI` is set in Vercel
+- Verify `MONGODB_URI` is set in Vercel Environment Variables
 - Check Atlas Network Access allows `0.0.0.0/0`
-- Verify database user credentials
+- Verify database user credentials are correct
+- Ensure connection string format is correct (no spaces, correct password)
 
 **Domain not working:**
 - DNS propagation can take up to 48 hours
 - Verify DNS records match Vercel requirements
 - Check Vercel Domains dashboard for status
+
+**How to check Vercel logs:**
+1. Go to Vercel Dashboard → Your Project
+2. Click "Deployments"
+3. Click on the latest deployment
+4. Click "View Function Logs"
+5. Look for errors related to MongoDB or RAWG API
 
 ### Local Testing
 
