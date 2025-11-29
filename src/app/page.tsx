@@ -2,6 +2,7 @@ import Link from "next/link";
 import { GameList } from "@/components/game-list";
 import { Button } from "@/components/ui/button";
 import UserMenu from "@/components/user-menu";
+import StatsPanel from "@/components/stats-panel";
 
 export default function Home() {
   return (
@@ -13,8 +14,8 @@ export default function Home() {
         </div>
       </header>
       <main className="p-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
+        <div className="max-w-7xl mx-auto space-y-8">
+          <div className="flex justify-between items-center">
             <div>
               <h2 className="text-4xl font-bold mb-2">My Collection</h2>
               <p className="text-muted-foreground">Retro Game Collection Tool</p>
@@ -23,7 +24,15 @@ export default function Home() {
               <Button>Add Game</Button>
             </Link>
           </div>
-          <GameList />
+          
+          {/* Stats Dashboard */}
+          <StatsPanel />
+          
+          {/* Game Grid */}
+          <div>
+            <h3 className="text-2xl font-bold mb-4">Games</h3>
+            <GameList />
+          </div>
         </div>
       </main>
     </div>
