@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { GameSearch } from "@/components/game-search";
 
 interface GameFormProps {
   game?: IGame;
@@ -18,6 +19,7 @@ interface GameFormProps {
 export function GameForm({ game, isEdit = false }: GameFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [mode, setMode] = useState<"search" | "manual">(isEdit ? "manual" : "search");
   const [formData, setFormData] = useState<Partial<IGame>>({
     title: game?.title || "",
     platform: game?.platform || "",
@@ -33,6 +35,25 @@ export function GameForm({ game, isEdit = false }: GameFormProps) {
       location: game?.purchaseInfo?.location || "",
     },
   });
+
+  const handleSelectGame = (searchResult: any) => {
+    setFormData({
+      title: searchResult.title,
+      platform: searchResult.platform,
+      year: searchResult.year,
+      genre: searchResult.genre,
+      status: "owned",
+      coverImageUrl: searchResult.coverImageUrl,
+      notes: searchResult.notes || "",
+      condition: undefined,
+      purchaseInfo: {
+        price: undefined,
+        date: undefined,
+        location: "",
+      },
+    });
+    setMode("manual");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,7 +118,28 @@ export function GameForm({ game, isEdit = false }: GameFormProps) {
         <CardTitle>{isEdit ? "Edit Game" : "Add New Game"}</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        {!isEdit && mode === "search" && (
+          <GameSearch
+            onSelectGame={handleSelectGame}
+            onManualEntry={() => setMode("manual")}
+          />
+        )}
+
+        {mode === "manual" && (
+          <>
+            {!isEdit && (
+              <div className="mb-4 flex justify-end">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setMode("search")}
+                >
+                  ← Back to Search
+                </Button>
+              </div>
+            )}
+            <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <Label htmlFor="title">Title *</Label>
             <Input
@@ -257,6 +299,8 @@ export function GameForm({ game, isEdit = false }: GameFormProps) {
             </Button>
           </div>
         </form>
+          </>
+        )}
       </CardContent>
     </Card>
   );
