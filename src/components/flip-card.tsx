@@ -156,7 +156,7 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
           <style jsx>{`
             @keyframes moveAndFlip {
               0% {
-                transform: translate(-50%, -50%) rotateY(0deg) scale(0.5);
+                transform: translate(-50%, -50%) rotateY(0deg);
               }
               100% {
                 transform: 
@@ -165,7 +165,7 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                     calc(50vh - ${startRect.top + startRect.height / 2}px - 50%)
                   )
                   rotateY(180deg)
-                  scale(1);
+                  scale(2);
               }
             }
             @keyframes moveAndFlipReverse {
@@ -176,10 +176,10 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                     calc(50vh - ${startRect.top + startRect.height / 2}px - 50%)
                   )
                   rotateY(180deg)
-                  scale(1);
+                  scale(2);
               }
               100% {
-                transform: translate(-50%, -50%) rotateY(360deg) scale(0.5);
+                transform: translate(-50%, -50%) rotateY(360deg) scale(1);
               }
             }
           `}</style>
