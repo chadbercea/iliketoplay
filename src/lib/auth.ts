@@ -8,7 +8,6 @@ import mongoose from "mongoose";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
-  adapter: MongoDBAdapter(clientPromise),
   providers: [
     Credentials({
       name: "credentials",
