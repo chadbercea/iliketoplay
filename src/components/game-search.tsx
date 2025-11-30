@@ -23,6 +23,7 @@ interface GameSearchProps {
 
 export function GameSearch({ onSelectGame, onManualEntry }: GameSearchProps) {
   const [query, setQuery] = useState("");
+  const [platform, setPlatform] = useState("");
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<SearchResult[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -38,9 +39,10 @@ export function GameSearch({ onSelectGame, onManualEntry }: GameSearchProps) {
     setResults([]);
 
     try {
-      const response = await fetch(
-        `/api/games/search?q=${encodeURIComponent(query)}`
-      );
+      const url = `/api/games/search?q=${encodeURIComponent(query)}${
+        platform ? `&platform=${encodeURIComponent(platform)}` : ""
+      }`;
+      const response = await fetch(url);
       const data = await response.json();
 
       if (!response.ok) {
@@ -79,11 +81,24 @@ export function GameSearch({ onSelectGame, onManualEntry }: GameSearchProps) {
             <Input
               id="search"
               type="text"
-              placeholder="e.g., Super Mario Bros"
+              placeholder="e.g., Mario, Zelda, Metroid"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               disabled={loading}
+              className="flex-1"
             />
+            <select
+              value={platform}
+              onChange={(e) => setPlatform(e.target.value)}
+              disabled={loading}
+              className="px-3 py-2 border rounded-md bg-background"
+            >
+              <option value="">All Platforms</option>
+              <option value="nes">NES</option>
+              <option value="snes">SNES</option>
+              <option value="genesis">Genesis</option>
+              <option value="game-boy">Game Boy</option>
+            </select>
             <Button type="submit" disabled={loading || !query.trim()}>
               {loading ? "Searching..." : "Search"}
             </Button>
