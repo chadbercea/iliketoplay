@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
 import { IGame } from "@/types/game";
 import { GameCard } from "./game-card";
 import { GameCardBack } from "./game-card-back";
@@ -13,6 +14,11 @@ interface FlipCardProps {
 
 export function FlipCard({ game, onDelete }: FlipCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (isExpanded) {
@@ -32,60 +38,106 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
     }
   }, [isExpanded]);
 
+  // Shared animation config
+  const transition = {
+    duration: 0.6,
+    ease: [0.32, 0.72, 0, 1]
+  };
+
   return (
-    // OUTER WRAPPER: Handles positioning and centering
-    <motion.div
-      layout
-      onClick={() => !isExpanded && setIsExpanded(true)}
-      style={{
-        position: isExpanded ? 'fixed' : 'relative',
-        inset: isExpanded ? 0 : 'auto',
-        display: isExpanded ? 'flex' : 'block',
-        alignItems: isExpanded ? 'center' : 'normal',
-        justifyContent: isExpanded ? 'center' : 'normal',
-        zIndex: isExpanded ? 50 : 1
-      }}
-      transition={{
-        layout: { duration: 0.6, ease: [0.32, 0.72, 0, 1] }
-      }}
-    >
-      {/* INNER WRAPPER: Handles rotation only */}
+    <>
+      {/* GRID CARD - Always rendered */}
       <motion.div
-        animate={{ rotateY: isExpanded ? 180 : 0 }}
-        transition={{
-          duration: 0.6,
-          ease: [0.32, 0.72, 0, 1]
-        }}
+        layoutId={`game-card-${game._id}`}
+        onClick={() => !isExpanded && setIsExpanded(true)}
         style={{
-          transformStyle: 'preserve-3d',
-          width: isExpanded ? 'min(90vw, 600px)' : '100%',
-          height: isExpanded ? 'min(90vh, 800px)' : 'auto',
-          aspectRatio: isExpanded ? 'auto' : '9/16',
-          position: 'relative'
+          aspectRatio: '9/16',
+          cursor: isExpanded ? 'default' : 'pointer',
+          opacity: isExpanded ? 0 : 1,
+          pointerEvents: isExpanded ? 'none' : 'auto',
+          borderRadius: '12px',
+          overflow: 'hidden'
         }}
+        transition={{ layout: transition }}
       >
-        {/* FRONT SIDE */}
-        <div style={{
-          backfaceVisibility: 'hidden',
-          position: 'absolute',
-          width: '100%',
-          height: '100%'
-        }}>
-          <GameCard game={game} />
-        </div>
-        
-        {/* BACK SIDE: Counter-rotated to be readable */}
-        <div style={{
-          backfaceVisibility: 'hidden',
-          position: 'absolute',
-          width: '100%',
-          height: '100%',
-          transform: 'rotateY(180deg)'
-        }}>
-          <GameCardBack game={game} onDelete={onDelete} onClose={() => setIsExpanded(false)} />
-        </div>
+        <GameCard game={game} />
       </motion.div>
-    </motion.div>
+
+      {/* EXPANDED CARD - Rendered in portal when expanded */}
+      {mounted && isExpanded && createPortal(
+        <AnimatePresence>
+          {/* Backdrop */}
+          <motion.div
+            key="backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.6 }}
+            exit={{ opacity: 0 }}
+            transition={transition}
+            onClick={() => setIsExpanded(false)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              backgroundColor: 'black',
+              zIndex: 40
+            }}
+          />
+          
+          {/* Expanded Card */}
+          <motion.div
+            key="card"
+            layoutId={`game-card-${game._id}`}  // SAME layoutId as grid card
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: 'min(90vw, 600px)',
+              height: 'min(90vh, 800px)',
+              zIndex: 50,
+              borderRadius: '12px',
+              overflow: 'hidden'
+            }}
+            transition={{ layout: transition }}
+          >
+            {/* Rotation Wrapper */}
+            <motion.div
+              initial={{ rotateY: 0 }}
+              animate={{ rotateY: 180 }}
+              exit={{ rotateY: 0 }}
+              transition={transition}
+              style={{
+                transformStyle: 'preserve-3d',
+                width: '100%',
+                height: '100%'
+              }}
+            >
+              {/* Front Side */}
+              <div style={{
+                backfaceVisibility: 'hidden',
+                position: 'absolute',
+                width: '100%',
+                height: '100%'
+              }}>
+                <GameCard game={game} />
+              </div>
+              
+              {/* Back Side - Pre-rotated 180deg */}
+              <div style={{
+                backfaceVisibility: 'hidden',
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                transform: 'rotateY(180deg)'
+              }}>
+                <GameCardBack game={game} onDelete={onDelete} onClose={() => setIsExpanded(false)} />
+              </div>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>,
+        document.body
+      )}
+    </>
   );
 }
 
