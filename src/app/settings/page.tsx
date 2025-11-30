@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { ArrowLeft } from "lucide-react";
 
 export default async function SettingsPage() {
@@ -49,6 +50,23 @@ export default async function SettingsPage() {
             </CardContent>
           </Card>
 
+          {/* Appearance */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Appearance</CardTitle>
+              <CardDescription>Customize how the app looks</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <label className="text-sm font-medium">Theme</label>
+                  <p className="text-sm text-slate-500">Choose light, dark, or system theme</p>
+                </div>
+                <ThemeToggle />
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Preferences - Placeholder */}
           <Card>
             <CardHeader>
@@ -60,7 +78,6 @@ export default async function SettingsPage() {
                 <p>• Default view (Games/Stats)</p>
                 <p>• Default sort order</p>
                 <p>• Display density</p>
-                <p>• Theme (Dark mode)</p>
               </div>
             </CardContent>
           </Card>
