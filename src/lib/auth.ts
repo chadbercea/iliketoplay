@@ -78,29 +78,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       return session;
     },
-    async authorized({ auth, request }) {
-      const { pathname } = request.nextUrl;
-      
-      console.log("[Middleware] Path:", pathname, "Auth:", !!auth);
-      
-      // Public routes
-      if (pathname.startsWith('/login') || 
-          pathname.startsWith('/signup') || 
-          pathname.startsWith('/api/auth')) {
-        console.log("[Middleware] Public route, allowing");
-        return true;
-      }
-      
-      // All other routes require auth
-      const isAuthorized = !!auth;
-      console.log("[Middleware] Protected route, authorized:", isAuthorized);
-      
-      if (!isAuthorized) {
-        console.log("[Middleware] Not authorized, will redirect to /login");
-      }
-      
-      return isAuthorized;
-    },
   },
 });
 
