@@ -40,28 +40,27 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
 
   return (
     <>
-      {/* Card in Grid */}
-      {!isFlipped && (
-        <motion.div
-          layoutId={`game-card-${game._id}`}
-          onClick={() => setIsFlipped(true)}
-          className="cursor-pointer"
-          style={{
-            transformStyle: "preserve-3d",
-          }}
-          transition={{
+      {/* Card in Grid - Always rendered */}
+      <motion.div
+        layoutId={`game-card-${game._id}`}
+        onClick={() => !isFlipped && setIsFlipped(true)}
+        className={!isFlipped ? "cursor-pointer" : ""}
+        style={{
+          transformStyle: "preserve-3d",
+          opacity: isFlipped ? 0 : 1,
+        }}
+        transition={{
+          layout: {
             duration: 0.6,
             ease: [0.4, 0, 0.2, 1],
-          }}
-        >
-          <GameCard game={game} />
-        </motion.div>
-      )}
-
-      {/* Placeholder in Grid when flipped */}
-      {isFlipped && (
-        <div className="w-full max-w-[300px] aspect-[9/16] rounded-xl border-2 border-dashed border-gray-600 bg-gray-800/30" />
-      )}
+          },
+          opacity: {
+            duration: 0.2,
+          }
+        }}
+      >
+        <GameCard game={game} />
+      </motion.div>
 
       {/* Modal Overlay */}
       {mounted && createPortal(
@@ -92,13 +91,16 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                   transformStyle: "preserve-3d",
                 }}
                 transition={{
-                  duration: 0.6,
-                  ease: [0.4, 0, 0.2, 1],
+                  layout: {
+                    duration: 0.6,
+                    ease: [0.4, 0, 0.2, 1],
+                  },
                 }}
               >
                 <motion.div
                   initial={{ rotateY: 0 }}
                   animate={{ rotateY: 180 }}
+                  exit={{ rotateY: 360 }}
                   transition={{
                     duration: 0.6,
                     ease: [0.4, 0, 0.2, 1],
