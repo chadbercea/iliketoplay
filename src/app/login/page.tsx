@@ -28,13 +28,22 @@ export default function LoginPage() {
         redirect: false,
       });
 
+      console.log("SignIn result:", result);
+
       if (result?.error) {
+        console.error("SignIn error:", result.error);
         setError("Invalid email or password");
+      } else if (result?.ok) {
+        console.log("SignIn successful, redirecting...");
+        // Give the session cookie time to be set
+        await new Promise(resolve => setTimeout(resolve, 500));
+        window.location.href = "/";
       } else {
-        router.push("/");
-        router.refresh();
+        console.error("Unexpected signIn result:", result);
+        setError("Login failed. Please try again.");
       }
     } catch (error) {
+      console.error("SignIn exception:", error);
       setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
