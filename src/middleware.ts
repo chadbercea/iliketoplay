@@ -12,8 +12,16 @@ export default auth((req) => {
     pathname.startsWith("/api/auth") ||
     pathname.startsWith("/api/signup");
 
-  // If not logged in and trying to access protected route, redirect to login
+  // API routes should pass through (they handle their own auth and return 401)
+  const isApiRoute = pathname.startsWith("/api/");
+
+  // If not logged in and trying to access protected route
   if (!isLoggedIn && !isPublicRoute) {
+    // API routes: let them pass through to return their own 401
+    if (isApiRoute) {
+      return NextResponse.next();
+    }
+    // Page routes: redirect to login
     const loginUrl = new URL("/login", req.url);
     return NextResponse.redirect(loginUrl);
   }
