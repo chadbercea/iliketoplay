@@ -68,29 +68,36 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
       {/* Flipping Card Overlay */}
       {mounted && isFlipped && startRect && createPortal(
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50"
           onClick={handleBackdropClick}
         >
           {/* Backdrop */}
           <div className="absolute inset-0 bg-black/50 animate-in fade-in duration-300" />
           
-          {/* Flip Container */}
+          {/* Animating Card - starts at grid position, moves to center */}
           <div 
-            className="flip-container"
             style={{
+              position: "fixed",
+              left: 0,
+              top: 0,
               perspective: "2000px",
-              width: "min(90vw, 600px)",
-              height: "min(90vh, 800px)",
+              width: "100vw",
+              height: "100vh",
+              pointerEvents: "none",
             }}
           >
             <div 
               className="flip-card-inner"
               style={{
-                position: "relative",
-                width: "100%",
-                height: "100%",
+                position: "absolute",
+                left: `${startRect.left + startRect.width / 2}px`,
+                top: `${startRect.top + startRect.height / 2}px`,
+                width: "300px",
+                height: `${300 * 16 / 9}px`,
                 transformStyle: "preserve-3d",
-                animation: "flipAndGrow 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards",
+                transformOrigin: "center center",
+                animation: "moveAndFlip 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards",
+                pointerEvents: "auto",
               }}
             >
               {/* Front Side */}
@@ -101,14 +108,9 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                   width: "100%",
                   height: "100%",
                   backfaceVisibility: "hidden",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
                 }}
               >
-                <div style={{ width: "300px", aspectRatio: "9/16" }}>
-                  <GameCard game={game} />
-                </div>
+                <GameCard game={game} />
               </div>
 
               {/* Back Side */}
@@ -120,24 +122,38 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                   height: "100%",
                   backfaceVisibility: "hidden",
                   transform: "rotateY(180deg)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
                 }}
                 onClick={handleCardClick}
               >
-                <GameCardBack game={game} onDelete={onDelete} />
+                <div style={{ 
+                  width: "100%", 
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}>
+                  <GameCardBack game={game} onDelete={onDelete} />
+                </div>
               </div>
             </div>
           </div>
 
           <style jsx>{`
-            @keyframes flipAndGrow {
+            @keyframes moveAndFlip {
               0% {
-                transform: rotateY(0deg);
+                transform: translate(-50%, -50%) rotateY(0deg) scale(1);
+                width: 300px;
+                height: ${300 * 16 / 9}px;
               }
               100% {
-                transform: rotateY(180deg);
+                transform: 
+                  translate(
+                    calc(50vw - ${startRect.left + startRect.width / 2}px - 50%),
+                    calc(50vh - ${startRect.top + startRect.height / 2}px - 50%)
+                  )
+                  rotateY(180deg);
+                width: min(90vw, 600px);
+                height: min(90vh, 800px);
               }
             }
           `}</style>
