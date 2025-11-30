@@ -184,7 +184,7 @@ export function GameList() {
           {/* Search and Filter Toggle */}
           <div className="flex gap-2">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-4 w-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
                 type="text"
                 placeholder="Search your collection (title, platform, genre, notes)..."
@@ -195,7 +195,7 @@ export function GameList() {
               {searchQuery && (
                 <button
                   onClick={clearSearch}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-muted-foreground"
                   aria-label="Clear search"
                 >
                   <X className="h-4 w-4" />
@@ -222,7 +222,7 @@ export function GameList() {
 
           {/* Filter Panel */}
           {showFilters && (
-            <div className="border rounded-lg p-4 space-y-4 bg-slate-50">
+            <div className="border rounded-lg p-4 space-y-4 bg-muted/50">
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold">Filters</h3>
                 {hasActiveFilters && (
@@ -312,7 +312,7 @@ export function GameList() {
 
           {/* Sort Control */}
           <div className="flex items-center justify-between">
-            <div className="text-sm text-slate-600">
+            <div className="text-sm text-muted-foreground">
               {searchQuery ? (
                 filteredAndSortedGames.length === 0 ? (
                   <span>No games found for "{searchQuery}"</span>
@@ -326,7 +326,7 @@ export function GameList() {
               )}
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-slate-600">Sort by:</span>
+              <span className="text-sm text-muted-foreground">Sort by:</span>
               <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue />

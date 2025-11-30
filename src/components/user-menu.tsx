@@ -32,7 +32,7 @@ export default function UserMenu() {
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <div className="px-2 py-2 text-sm text-slate-600">
+        <div className="px-2 py-2 text-sm text-muted-foreground">
           {session.user?.email}
         </div>
         <DropdownMenuSeparator />

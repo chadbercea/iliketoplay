@@ -23,24 +23,24 @@ export function GameCard({ game, onDelete }: GameCardProps) {
   const getConditionColor = (condition?: string) => {
     switch (condition) {
       case "mint":
-        return "bg-green-100 text-green-800 border-green-300";
+        return "bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20";
       case "excellent":
-        return "bg-blue-100 text-blue-800 border-blue-300";
+        return "bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/20";
       case "good":
-        return "bg-yellow-100 text-yellow-800 border-yellow-300";
+        return "bg-yellow-500/10 text-yellow-700 dark:text-yellow-400 border-yellow-500/20";
       case "fair":
-        return "bg-orange-100 text-orange-800 border-orange-300";
+        return "bg-orange-500/10 text-orange-700 dark:text-orange-400 border-orange-500/20";
       case "poor":
-        return "bg-red-100 text-red-800 border-red-300";
+        return "bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20";
       default:
-        return "bg-slate-100 text-slate-800 border-slate-300";
+        return "bg-muted text-muted-foreground border-muted";
     }
   };
 
   return (
     <Card className="overflow-hidden transition-all duration-200 hover:shadow-xl hover:scale-[1.02] group">
       {/* Cover Image */}
-      <div className="relative w-full h-48 bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
+      <div className="relative w-full h-48 bg-gradient-to-br from-muted/30 to-muted/60 overflow-hidden">
         {game.coverImageUrl ? (
           <Image
             src={game.coverImageUrl}
@@ -51,7 +51,7 @@ export function GameCard({ game, onDelete }: GameCardProps) {
           />
         ) : (
           <div className="flex items-center justify-center h-full">
-            <Gamepad2 className="w-16 h-16 text-slate-400" strokeWidth={1.5} />
+            <Gamepad2 className="w-16 h-16 text-muted-foreground" strokeWidth={1.5} />
           </div>
         )}
         {/* Status Badge Overlay */}
@@ -59,8 +59,8 @@ export function GameCard({ game, onDelete }: GameCardProps) {
           <Badge
             className={
               game.status === "owned"
-                ? "bg-green-600 hover:bg-green-700 text-white shadow-md"
-                : "bg-blue-600 hover:bg-blue-700 text-white shadow-md"
+                ? "bg-green-600 dark:bg-green-700 hover:bg-green-700 dark:hover:bg-green-600 text-white shadow-md"
+                : "bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 text-white shadow-md"
             }
           >
             {game.status === "owned" ? "Owned" : "Wishlist"}
@@ -72,7 +72,7 @@ export function GameCard({ game, onDelete }: GameCardProps) {
         <CardTitle className="text-xl line-clamp-2">{game.title}</CardTitle>
         <CardDescription className="flex items-center gap-2 flex-wrap">
           <span className="font-medium">{game.platform}</span>
-          {game.year && <span className="text-slate-400">•</span>}
+          {game.year && <span className="text-muted-foreground">•</span>}
           {game.year && <span>{game.year}</span>}
         </CardDescription>
       </CardHeader>
@@ -97,19 +97,19 @@ export function GameCard({ game, onDelete }: GameCardProps) {
           {(game.purchaseInfo?.price || game.purchaseInfo?.date || game.purchaseInfo?.location) && (
             <div className="space-y-1 pt-2 border-t">
               {game.purchaseInfo.price && (
-                <div className="flex items-center gap-2 text-sm text-slate-600">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <DollarSign className="w-4 h-4" />
                   <span className="font-medium">${game.purchaseInfo.price.toFixed(2)}</span>
                 </div>
               )}
               {game.purchaseInfo.date && (
-                <div className="flex items-center gap-2 text-sm text-slate-600">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Calendar className="w-4 h-4" />
                   <span>{new Date(game.purchaseInfo.date).toLocaleDateString()}</span>
                 </div>
               )}
               {game.purchaseInfo.location && (
-                <div className="flex items-center gap-2 text-sm text-slate-600">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <MapPin className="w-4 h-4" />
                   <span className="line-clamp-1">{game.purchaseInfo.location}</span>
                 </div>
@@ -119,14 +119,14 @@ export function GameCard({ game, onDelete }: GameCardProps) {
 
           {/* Notes */}
           {game.notes && (
-            <p className="text-sm text-slate-600 line-clamp-2 pt-2 border-t italic">
+            <p className="text-sm text-muted-foreground line-clamp-2 pt-2 border-t italic">
               {game.notes}
             </p>
           )}
         </div>
       </CardContent>
 
-      <CardFooter className="gap-2 pt-4 border-t bg-slate-50/50">
+      <CardFooter className="gap-2 pt-4 border-t bg-muted/30">
         <Link href={`/games/${game._id}/edit`} className="flex-1">
           <Button
             variant="outline"

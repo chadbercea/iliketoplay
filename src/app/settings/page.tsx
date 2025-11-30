@@ -14,7 +14,7 @@ export default async function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       <header className="bg-white border-b shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <Link href="/">
@@ -38,12 +38,12 @@ export default async function SettingsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <label className="text-sm font-medium text-slate-600">Email</label>
+                <label className="text-sm font-medium text-muted-foreground">Email</label>
                 <p className="text-lg">{session.user.email}</p>
               </div>
               {session.user.name && (
                 <div>
-                  <label className="text-sm font-medium text-slate-600">Name</label>
+                  <label className="text-sm font-medium text-muted-foreground">Name</label>
                   <p className="text-lg">{session.user.name}</p>
                 </div>
               )}
@@ -60,7 +60,7 @@ export default async function SettingsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <label className="text-sm font-medium">Theme</label>
-                  <p className="text-sm text-slate-500">Choose light, dark, or system theme</p>
+                  <p className="text-sm text-muted-foreground">Choose light, dark, or system theme</p>
                 </div>
                 <ThemeToggle />
               </div>
@@ -74,7 +74,7 @@ export default async function SettingsPage() {
               <CardDescription>Customize your experience (Coming Soon)</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="text-sm text-slate-500">
+              <div className="text-sm text-muted-foreground">
                 <p>• Default view (Games/Stats)</p>
                 <p>• Default sort order</p>
                 <p>• Display density</p>

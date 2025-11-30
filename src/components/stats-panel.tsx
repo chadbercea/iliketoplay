@@ -43,7 +43,7 @@ export default function StatsPanel() {
 
   if (loading) {
     return (
-      <div className="text-center py-8 text-slate-600">
+      <div className="text-center py-8 text-muted-foreground">
         Loading statistics...
       </div>
     );
@@ -59,12 +59,12 @@ export default function StatsPanel() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-600">Total Games</CardTitle>
-            <Package className="h-4 w-4 text-slate-400" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">Total Games</CardTitle>
+            <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.totalGames}</div>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               {stats.ownedCount} owned, {stats.wishlistCount} wishlist
             </p>
           </CardContent>
@@ -72,12 +72,12 @@ export default function StatsPanel() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-600">Owned Games</CardTitle>
-            <TrendingUp className="h-4 w-4 text-slate-400" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">Owned Games</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.ownedCount}</div>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               {stats.totalGames > 0
                 ? Math.round((stats.ownedCount / stats.totalGames) * 100)
                 : 0}% of collection
@@ -87,12 +87,12 @@ export default function StatsPanel() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-600">Wishlist</CardTitle>
-            <Heart className="h-4 w-4 text-slate-400" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">Wishlist</CardTitle>
+            <Heart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.wishlistCount}</div>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Games you want to own
             </p>
           </CardContent>
@@ -101,12 +101,12 @@ export default function StatsPanel() {
         {stats.totalValue > 0 && (
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-slate-600">Collection Value</CardTitle>
-              <DollarSign className="h-4 w-4 text-slate-400" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Collection Value</CardTitle>
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">${stats.totalValue.toFixed(2)}</div>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 Total purchase price
               </p>
             </CardContent>
@@ -116,12 +116,12 @@ export default function StatsPanel() {
         {stats.averageYear && (
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-slate-600">Average Year</CardTitle>
-              <Calendar className="h-4 w-4 text-slate-400" />
+              <CardTitle className="text-sm font-medium text-muted-foreground">Average Year</CardTitle>
+              <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.averageYear}</div>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 Avg release year
               </p>
             </CardContent>
