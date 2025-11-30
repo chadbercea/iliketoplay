@@ -13,6 +13,8 @@ export interface RAWGGame {
   released: string;
   background_image: string;
   rating: number;
+  metacritic?: number;
+  description_raw?: string;
   platforms: Array<{
     platform: {
       id: number;
