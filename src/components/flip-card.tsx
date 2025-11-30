@@ -59,10 +59,15 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
       {/* Card in Grid */}
       <div
         ref={cardRef}
-        onClick={mounted ? handleCardClick : undefined}
-        className={mounted ? "cursor-pointer" : ""}
+        onClick={mounted && !isFlipped ? handleCardClick : undefined}
+        className={mounted && !isFlipped ? "cursor-pointer" : ""}
       >
-        <GameCard game={game} />
+        {isFlipped ? (
+          /* Placeholder outline when card is flipped */
+          <div className="w-full max-w-[300px] aspect-[9/16] rounded-xl border-2 border-dashed border-gray-600 bg-gray-800/30" />
+        ) : (
+          <GameCard game={game} />
+        )}
       </div>
 
       {/* Flipping Card Overlay */}
@@ -92,8 +97,8 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                 position: "absolute",
                 left: `${startRect.left + startRect.width / 2}px`,
                 top: `${startRect.top + startRect.height / 2}px`,
-                width: "300px",
-                height: `${300 * 16 / 9}px`,
+                width: "min(90vw, 600px)",
+                height: "min(90vh, 800px)",
                 transformStyle: "preserve-3d",
                 transformOrigin: "center center",
                 animation: "moveAndFlip 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards",
@@ -108,9 +113,14 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                   width: "100%",
                   height: "100%",
                   backfaceVisibility: "hidden",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <GameCard game={game} />
+                <div style={{ width: "300px", maxWidth: "100%" }}>
+                  <GameCard game={game} />
+                </div>
               </div>
 
               {/* Back Side */}
@@ -125,15 +135,7 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                 }}
                 onClick={handleCardClick}
               >
-                <div style={{ 
-                  width: "100%", 
-                  height: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}>
-                  <GameCardBack game={game} onDelete={onDelete} />
-                </div>
+                <GameCardBack game={game} onDelete={onDelete} />
               </div>
             </div>
           </div>
@@ -141,9 +143,7 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
           <style jsx>{`
             @keyframes moveAndFlip {
               0% {
-                transform: translate(-50%, -50%) rotateY(0deg) scale(1);
-                width: 300px;
-                height: ${300 * 16 / 9}px;
+                transform: translate(-50%, -50%) rotateY(0deg) scale(0.5);
               }
               100% {
                 transform: 
@@ -151,9 +151,8 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                     calc(50vw - ${startRect.left + startRect.width / 2}px - 50%),
                     calc(50vh - ${startRect.top + startRect.height / 2}px - 50%)
                   )
-                  rotateY(180deg);
-                width: min(90vw, 600px);
-                height: min(90vh, 800px);
+                  rotateY(180deg)
+                  scale(1);
               }
             }
           `}</style>
