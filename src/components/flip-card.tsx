@@ -48,6 +48,8 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
         style={{
           transformStyle: "preserve-3d",
           opacity: isFlipped ? 0 : 1,
+          zIndex: isFlipped ? 100 : 1,
+          position: isFlipped ? "relative" : "relative",
         }}
         transition={{
           layout: {
