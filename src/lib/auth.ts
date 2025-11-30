@@ -7,6 +7,7 @@ import dbConnect from "@/lib/db";
 import mongoose from "mongoose";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  trustHost: true,
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     Credentials({
@@ -72,6 +73,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.id = token.id as string;
       }
       return session;
+    },
+    async authorized({ auth, request }) {
+      const { pathname } = request.nextUrl;
+      
+      // Public routes
+      if (pathname.startsWith('/login') || 
+          pathname.startsWith('/signup') || 
+          pathname.startsWith('/api/auth')) {
+        return true;
+      }
+      
+      // All other routes require auth
+      return !!auth;
     },
   },
 });
