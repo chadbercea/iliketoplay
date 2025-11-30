@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GameSearch } from "@/components/game-search";
+import { toast } from "sonner";
 
 interface GameFormProps {
   game?: IGame;
@@ -72,14 +73,16 @@ export function GameForm({ game, isEdit = false }: GameFormProps) {
       });
 
       if (response.ok) {
+        toast.success(isEdit ? "Game updated successfully!" : "Game added to collection!");
         router.push("/");
         router.refresh();
       } else {
         const data = await response.json();
-        alert(data.error || "Failed to save game");
+        toast.error(data.error || "Failed to save game");
       }
     } catch (error) {
-      alert("An error occurred");
+      console.error("Save error:", error);
+      toast.error("An error occurred while saving the game");
     } finally {
       setLoading(false);
     }

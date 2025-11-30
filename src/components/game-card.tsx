@@ -53,11 +53,22 @@ export function GameCard({ game, onDelete }: GameCardProps) {
           )}
         </div>
       </CardContent>
-      <CardFooter className="gap-2">
-        <Link href={`/games/${game._id}/edit`}>
-          <Button variant="outline">Edit</Button>
+      <CardFooter className="gap-2 flex-wrap">
+        <Link href={`/games/${game._id}/edit`} className="flex-1 sm:flex-initial">
+          <Button 
+            variant="outline" 
+            className="w-full sm:w-auto min-h-[44px]"
+            aria-label={`Edit ${game.title}`}
+          >
+            Edit
+          </Button>
         </Link>
-        <Button variant="destructive" onClick={handleDelete}>
+        <Button 
+          variant="destructive" 
+          onClick={handleDelete}
+          className="flex-1 sm:flex-initial w-full sm:w-auto min-h-[44px]"
+          aria-label={`Delete ${game.title}`}
+        >
           Delete
         </Button>
       </CardFooter>

@@ -4,12 +4,14 @@ import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { IGame } from "@/types/game";
 import { GameCard } from "./game-card";
+import { GameCardSkeleton } from "./game-card-skeleton";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Search, X, Filter, SlidersHorizontal } from "lucide-react";
 import Fuse from "fuse.js";
+import { toast } from "sonner";
 
 type SortOption = "title-asc" | "title-desc" | "year-new" | "year-old" | "added-new" | "added-old" | "platform-asc";
 
@@ -37,15 +39,21 @@ export function GameList() {
       const data = await response.json();
       if (data.success) {
         setGames(data.data);
+      } else {
+        toast.error("Failed to load games");
       }
     } catch (error) {
       console.error("Failed to fetch games:", error);
+      toast.error("Failed to load games. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (id: string) => {
+    const gameToDelete = games.find((g) => g._id === id);
+    const gameName = gameToDelete?.title || "Game";
+    
     try {
       const response = await fetch(`/api/games/${id}`, {
         method: "DELETE",
@@ -53,12 +61,15 @@ export function GameList() {
 
       if (response.ok) {
         setGames(games.filter((game) => game._id !== id));
+        toast.success(`${gameName} deleted successfully`);
         router.refresh();
       } else {
-        alert("Failed to delete game");
+        const data = await response.json();
+        toast.error(data.error || "Failed to delete game");
       }
     } catch (error) {
-      alert("An error occurred");
+      console.error("Delete error:", error);
+      toast.error("An error occurred while deleting the game");
     }
   };
 
@@ -155,7 +166,15 @@ export function GameList() {
                           selectedGenres.length > 0 || selectedConditions.length > 0;
 
   if (loading) {
-    return <div className="text-center py-8">Loading games...</div>;
+    return (
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[...Array(6)].map((_, i) => (
+            <GameCardSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -186,7 +205,9 @@ export function GameList() {
             <Button 
               variant="outline" 
               onClick={() => setShowFilters(!showFilters)}
-              className="shrink-0"
+              className="shrink-0 min-h-[44px]"
+              aria-label={showFilters ? "Hide filters" : "Show filters"}
+              aria-expanded={showFilters}
             >
               <SlidersHorizontal className="h-4 w-4 mr-2" />
               Filters
@@ -336,8 +357,14 @@ export function GameList() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredAndSortedGames.map((game) => (
-            <GameCard key={game._id} game={game} onDelete={handleDelete} />
+          {filteredAndSortedGames.map((game, index) => (
+            <div 
+              key={game._id} 
+              style={{ animationDelay: `${index * 0.05}s` }}
+              className="fade-in"
+            >
+              <GameCard game={game} onDelete={handleDelete} />
+            </div>
           ))}
         </div>
       )}

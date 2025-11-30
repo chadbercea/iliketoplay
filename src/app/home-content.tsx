@@ -18,15 +18,15 @@ export default function HomeContent() {
       </header>
       <main className="p-8">
         <div className="max-w-7xl mx-auto space-y-8">
-          <div className="flex justify-between items-center">
-            <div>
-              <h2 className="text-4xl font-bold mb-2">My Collection</h2>
-              <p className="text-muted-foreground">Retro Game Collection Tool</p>
-            </div>
-            <Link href="/games/new">
-              <Button>Add Game</Button>
-            </Link>
-          </div>
+              <div className="flex justify-between items-center gap-4 flex-wrap">
+                <div>
+                  <h2 className="text-4xl font-bold mb-2">My Collection</h2>
+                  <p className="text-muted-foreground">Retro Game Collection Tool</p>
+                </div>
+                <Link href="/games/new">
+                  <Button className="min-h-[44px]" aria-label="Add new game to collection">Add Game</Button>
+                </Link>
+              </div>
           
           <Tabs defaultValue="games" className="w-full">
             <TabsList>
