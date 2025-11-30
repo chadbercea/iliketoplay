@@ -89,9 +89,8 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
             onClick={(e) => e.stopPropagation()}
             style={{
               position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
+              inset: 0,
+              margin: 'auto',
               width: 'min(90vw, 600px)',
               height: 'min(90vh, 800px)',
               zIndex: 50,
