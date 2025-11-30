@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { searchGames, rawgToGameData } from "@/lib/rawg";
+import { searchGames, rawgToGameData, PLATFORM_MAP } from "@/lib/rawg";
 import dbConnect from "@/lib/db";
 import GameCache from "@/lib/models/game-cache";
 import { auth } from "@/lib/auth";
@@ -82,12 +82,27 @@ export async function GET(request: NextRequest) {
     // Step 4: Save results to cache
     const cachePromises = results.results.map(async (game) => {
       try {
+        // Determine the correct platform to cache
+        let cachePlatform = "Unknown";
+        if (platform) {
+          const platformConfig = PLATFORM_MAP[platform.toLowerCase()];
+          if (platformConfig) {
+            const matchingPlatform = game.platforms?.find(
+              (p) => p.platform.id.toString() === platformConfig.id
+            );
+            cachePlatform = matchingPlatform?.platform.name || platformConfig.name;
+          }
+        }
+        if (cachePlatform === "Unknown") {
+          cachePlatform = game.platforms?.[0]?.platform?.name || "Unknown";
+        }
+
         await GameCache.findOneAndUpdate(
           { rawgId: game.id },
           {
             rawgId: game.id,
             title: game.name,
-            platform: game.platforms?.[0]?.platform?.name || platform || 'Unknown',
+            platform: cachePlatform,
             year: game.released ? new Date(game.released).getFullYear() : undefined,
             genre: game.genres?.[0]?.name || undefined,
             coverImageUrl: game.background_image || undefined,
@@ -116,7 +131,7 @@ export async function GET(request: NextRequest) {
     // Step 5: Return results
     const games = results.results.map((game) => ({
       rawgId: game.id,
-      ...rawgToGameData(game),
+      ...rawgToGameData(game, platform || undefined),
     }));
 
     return NextResponse.json({

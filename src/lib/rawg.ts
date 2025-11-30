@@ -33,6 +33,14 @@ export interface RAWGSearchResponse {
   results: RAWGGame[];
 }
 
+// Platform ID mapping for RAWG API
+export const PLATFORM_MAP: Record<string, { id: string; name: string }> = {
+  nes: { id: "49", name: "NES" },
+  snes: { id: "83", name: "SNES" },
+  genesis: { id: "167", name: "Genesis" },
+  "game-boy": { id: "26", name: "Game Boy" },
+};
+
 /**
  * Search for games on RAWG
  */
@@ -52,16 +60,9 @@ export async function searchGames(
 
   // Filter by platform if specified
   if (platform) {
-    // RAWG platform IDs: NES = 49, SNES = 83, etc.
-    const platformMap: Record<string, string> = {
-      nes: "49",
-      snes: "83",
-      genesis: "167",
-      "game-boy": "26",
-    };
-    const platformId = platformMap[platform.toLowerCase()];
-    if (platformId) {
-      params.append("platforms", platformId);
+    const platformConfig = PLATFORM_MAP[platform.toLowerCase()];
+    if (platformConfig) {
+      params.append("platforms", platformConfig.id);
     }
   }
 
@@ -109,13 +110,32 @@ export async function getGameDetails(gameId: number): Promise<RAWGGame> {
 
 /**
  * Convert RAWG game data to our game format
+ * @param rawgGame - Game data from RAWG API
+ * @param platformFilter - Optional platform filter to find specific platform in results
  */
-export function rawgToGameData(rawgGame: RAWGGame) {
+export function rawgToGameData(rawgGame: RAWGGame, platformFilter?: string) {
   const year = rawgGame.released
     ? new Date(rawgGame.released).getFullYear()
     : undefined;
 
-  const platform = rawgGame.platforms[0]?.platform.name || "Unknown";
+  // If platform filter was used, find that specific platform in the platforms array
+  let platform = "Unknown";
+  if (platformFilter) {
+    const platformConfig = PLATFORM_MAP[platformFilter.toLowerCase()];
+    if (platformConfig) {
+      // Find the platform matching our filter in the game's platforms array
+      const matchingPlatform = rawgGame.platforms?.find(
+        (p) => p.platform.id.toString() === platformConfig.id
+      );
+      platform = matchingPlatform?.platform.name || platformConfig.name;
+    }
+  }
+  
+  // Fall back to first platform if no filter or not found
+  if (platform === "Unknown") {
+    platform = rawgGame.platforms[0]?.platform.name || "Unknown";
+  }
+
   const genre = rawgGame.genres[0]?.name || "";
 
   return {
