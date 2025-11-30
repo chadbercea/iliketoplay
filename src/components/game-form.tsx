@@ -190,25 +190,27 @@ export function GameForm({ game, isEdit = false }: GameFormProps) {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="status">Status *</Label>
-              <Select
+              <select
                 id="status"
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
                 required
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
               >
                 <option value="owned">Owned</option>
                 <option value="wishlist">Wishlist</option>
-              </Select>
+              </select>
             </div>
 
             <div>
               <Label htmlFor="condition">Condition</Label>
-              <Select
+              <select
                 id="condition"
                 name="condition"
                 value={formData.condition || ""}
                 onChange={handleChange}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
               >
                 <option value="">Select condition</option>
                 <option value="mint">Mint</option>
@@ -216,7 +218,7 @@ export function GameForm({ game, isEdit = false }: GameFormProps) {
                 <option value="good">Good</option>
                 <option value="fair">Fair</option>
                 <option value="poor">Poor</option>
-              </Select>
+              </select>
             </div>
           </div>
 
