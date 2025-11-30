@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { IGame } from "@/types/game";
 import { GameCard } from "./game-card";
@@ -14,6 +14,8 @@ interface FlipCardProps {
 export function FlipCard({ game, onDelete }: FlipCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [startRect, setStartRect] = useState<DOMRect | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -21,10 +23,8 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
 
   useEffect(() => {
     if (isFlipped) {
-      // Disable body scroll when modal open
       document.body.style.overflow = "hidden";
       
-      // Close on Escape key
       const handleEscape = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
           setIsFlipped(false);
@@ -40,11 +40,15 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
   }, [isFlipped]);
 
   const handleCardClick = () => {
+    if (!isFlipped && cardRef.current) {
+      // Capture position before flipping
+      const rect = cardRef.current.getBoundingClientRect();
+      setStartRect(rect);
+    }
     setIsFlipped(!isFlipped);
   };
 
   const handleBackdropClick = (e: React.MouseEvent) => {
-    // Close if clicking the backdrop, not the card content
     if (e.target === e.currentTarget) {
       setIsFlipped(false);
     }
@@ -52,46 +56,88 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
 
   return (
     <>
-      {/* Front Card in Grid */}
+      {/* Card in Grid */}
       <div
-        onClick={handleCardClick}
-        className="cursor-pointer"
-        style={{
-          visibility: isFlipped ? "hidden" : "visible",
-        }}
+        ref={cardRef}
+        onClick={mounted ? handleCardClick : undefined}
+        className={mounted ? "cursor-pointer" : ""}
       >
         <GameCard game={game} />
       </div>
 
-      {/* Modal with Back Card */}
-      {mounted && isFlipped && createPortal(
+      {/* Flipping Card Overlay */}
+      {mounted && isFlipped && startRect && createPortal(
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-in fade-in duration-300"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
           onClick={handleBackdropClick}
         >
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-black/50 animate-in fade-in duration-300" />
           
-          {/* Animated Back Card */}
+          {/* Flip Container */}
           <div 
-            className="relative z-10 animate-in zoom-in-95 slide-in-from-bottom-4 duration-500"
+            className="flip-container"
             style={{
-              animation: "flipIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards",
+              perspective: "2000px",
+              width: "min(90vw, 600px)",
+              height: "min(90vh, 800px)",
             }}
-            onClick={handleCardClick}
           >
-            <GameCardBack game={game} onDelete={onDelete} />
+            <div 
+              className="flip-card-inner"
+              style={{
+                position: "relative",
+                width: "100%",
+                height: "100%",
+                transformStyle: "preserve-3d",
+                animation: "flipAndGrow 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards",
+              }}
+            >
+              {/* Front Side */}
+              <div 
+                className="flip-card-front"
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: "100%",
+                  backfaceVisibility: "hidden",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <div style={{ width: "300px", aspectRatio: "9/16" }}>
+                  <GameCard game={game} />
+                </div>
+              </div>
+
+              {/* Back Side */}
+              <div 
+                className="flip-card-back"
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: "100%",
+                  backfaceVisibility: "hidden",
+                  transform: "rotateY(180deg)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                onClick={handleCardClick}
+              >
+                <GameCardBack game={game} onDelete={onDelete} />
+              </div>
+            </div>
           </div>
 
           <style jsx>{`
-            @keyframes flipIn {
+            @keyframes flipAndGrow {
               0% {
-                transform: perspective(1200px) rotateX(-90deg) scale(0.8);
-                opacity: 0;
+                transform: rotateY(0deg);
               }
               100% {
-                transform: perspective(1200px) rotateX(0deg) scale(1);
-                opacity: 1;
+                transform: rotateY(180deg);
               }
             }
           `}</style>

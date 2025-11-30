@@ -17,7 +17,7 @@ export function GameCardBack({ game, onDelete }: GameCardBackProps) {
   };
 
   return (
-    <div className="w-full max-w-[600px] max-h-[90vh] bg-gray-900 rounded-xl overflow-y-auto p-6 shadow-2xl">
+    <div className="w-full h-full bg-gray-900 rounded-xl overflow-y-auto p-6 shadow-2xl">
       <div className="flex flex-col gap-5">
         {/* Title */}
         <h2 className="text-2xl font-bold text-white border-b border-gray-700 pb-3">
