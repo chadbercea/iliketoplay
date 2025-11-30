@@ -81,53 +81,60 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
               {/* Backdrop */}
               <div className="absolute inset-0 bg-black/50" />
 
-              {/* Animated Card Container */}
+              {/* Animated Card */}
               <motion.div
                 layoutId={`game-card-${game._id}`}
                 className="relative z-10"
-                initial={{ rotateY: 0 }}
-                animate={{ rotateY: 180 }}
-                exit={{ rotateY: 0 }}
                 style={{
                   width: "min(90vw, min(90vh * 9 / 16, 600px))",
                   aspectRatio: "9 / 16",
                   transformStyle: "preserve-3d",
                 }}
                 transition={{
-                  layout: {
-                    duration: 0.6,
-                    ease: [0.4, 0, 0.2, 1],
-                  },
-                  rotateY: {
-                    duration: 0.6,
-                    ease: [0.4, 0, 0.2, 1],
-                  },
+                  duration: 0.6,
+                  ease: [0.4, 0, 0.2, 1],
                 }}
               >
-                {/* Front */}
-                <div
+                <motion.div
+                  initial={{ rotateY: 0 }}
+                  animate={{ rotateY: 180 }}
+                  exit={{ rotateY: 0 }}
+                  transition={{
+                    duration: 0.6,
+                    ease: [0.4, 0, 0.2, 1],
+                  }}
                   style={{
-                    position: "absolute",
                     width: "100%",
                     height: "100%",
-                    backfaceVisibility: "hidden",
+                    transformStyle: "preserve-3d",
+                    position: "relative",
                   }}
                 >
-                  <GameCard game={game} />
-                </div>
+                  {/* Front */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      width: "100%",
+                      height: "100%",
+                      backfaceVisibility: "hidden",
+                    }}
+                  >
+                    <GameCard game={game} />
+                  </div>
 
-                {/* Back */}
-                <div
-                  style={{
-                    position: "absolute",
-                    width: "100%",
-                    height: "100%",
-                    backfaceVisibility: "hidden",
-                    transform: "rotateY(180deg)",
-                  }}
-                >
-                  <GameCardBack game={game} onDelete={onDelete} onClose={() => setIsFlipped(false)} />
-                </div>
+                  {/* Back */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      width: "100%",
+                      height: "100%",
+                      backfaceVisibility: "hidden",
+                      transform: "rotateY(180deg)",
+                    }}
+                  >
+                    <GameCardBack game={game} onDelete={onDelete} onClose={() => setIsFlipped(false)} />
+                  </div>
+                </motion.div>
               </motion.div>
             </motion.div>
           )}
