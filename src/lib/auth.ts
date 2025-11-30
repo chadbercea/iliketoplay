@@ -8,6 +8,9 @@ import mongoose from "mongoose";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
+  // Note: Credentials provider CANNOT use database adapters
+  // Adapter is only for OAuth/Email providers
+  // We manage users manually via Mongoose in authorize()
   providers: [
     Credentials({
       name: "credentials",
@@ -56,7 +59,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
+  debug: true, // Enable debug logging
   pages: {
     signIn: "/login",
   },
