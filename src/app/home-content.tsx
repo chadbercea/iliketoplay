@@ -5,6 +5,7 @@ import { GameList } from "@/components/game-list";
 import { Button } from "@/components/ui/button";
 import UserMenu from "@/components/user-menu";
 import StatsPanel from "@/components/stats-panel";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function HomeContent() {
   return (
@@ -27,14 +28,20 @@ export default function HomeContent() {
             </Link>
           </div>
           
-          {/* Stats Dashboard */}
-          <StatsPanel />
-          
-          {/* Game Grid */}
-          <div>
-            <h3 className="text-2xl font-bold mb-4">Games</h3>
-            <GameList />
-          </div>
+          <Tabs defaultValue="games" className="w-full">
+            <TabsList>
+              <TabsTrigger value="games">Games</TabsTrigger>
+              <TabsTrigger value="stats">Stats</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="games" className="mt-6">
+              <GameList />
+            </TabsContent>
+            
+            <TabsContent value="stats" className="mt-6">
+              <StatsPanel />
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
     </div>
