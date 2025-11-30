@@ -15,7 +15,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="bg-white border-b shadow-sm">
+      <header className="bg-background border-b shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <Link href="/">
             <Button variant="ghost" className="gap-2">
