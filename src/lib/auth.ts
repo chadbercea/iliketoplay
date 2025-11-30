@@ -31,7 +31,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         const User = mongoose.models.User || mongoose.model("User", UserSchema);
 
-        const user = await User.findOne({ email: credentials.email });
+        const user = await User.findOne({ email: credentials.email.toLowerCase() });
 
         if (!user || !user.password) {
           return null;
