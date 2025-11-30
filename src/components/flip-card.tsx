@@ -63,76 +63,80 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
         <GameCard game={game} />
       </motion.div>
 
-      {/* EXPANDED CARD - Rendered in portal when expanded */}
-      {mounted && isExpanded && createPortal(
+      {/* EXPANDED CARD - Portal always mounted, content conditional */}
+      {mounted && createPortal(
         <AnimatePresence>
-          {/* Backdrop */}
-          <motion.div
-            key="backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.6 }}
-            exit={{ opacity: 0 }}
-            transition={transition}
-            onClick={() => setIsExpanded(false)}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              backgroundColor: 'black',
-              zIndex: 40
-            }}
-          />
-          
-          {/* Expanded Card */}
-          <motion.div
-            key="card"
-            layoutId={`game-card-${game._id}`}  // SAME layoutId as grid card
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              margin: 'auto',
-              width: 'min(90vw, 600px)',
-              height: 'min(90vh, 800px)',
-              zIndex: 50,
-              borderRadius: '12px',
-              overflow: 'hidden'
-            }}
-            transition={{ layout: transition }}
-          >
-            {/* Rotation Wrapper */}
-            <motion.div
-              initial={{ rotateY: 0 }}
-              animate={{ rotateY: 180 }}
-              exit={{ rotateY: 0 }}
-              transition={transition}
-              style={{
-                transformStyle: 'preserve-3d',
-                width: '100%',
-                height: '100%'
-              }}
-            >
-              {/* Front Side */}
-              <div style={{
-                backfaceVisibility: 'hidden',
-                position: 'absolute',
-                width: '100%',
-                height: '100%'
-              }}>
-                <GameCard game={game} />
-              </div>
+          {isExpanded && (
+            <>
+              {/* Backdrop */}
+              <motion.div
+                key="backdrop"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.6 }}
+                exit={{ opacity: 0 }}
+                transition={transition}
+                onClick={() => setIsExpanded(false)}
+                style={{
+                  position: 'fixed',
+                  inset: 0,
+                  backgroundColor: 'black',
+                  zIndex: 40
+                }}
+              />
               
-              {/* Back Side - Pre-rotated 180deg */}
-              <div style={{
-                backfaceVisibility: 'hidden',
-                position: 'absolute',
-                width: '100%',
-                height: '100%',
-                transform: 'rotateY(180deg)'
-              }}>
-                <GameCardBack game={game} onDelete={onDelete} onClose={() => setIsExpanded(false)} />
-              </div>
-            </motion.div>
-          </motion.div>
+              {/* Expanded Card */}
+              <motion.div
+                key="card"
+                layoutId={`game-card-${game._id}`}  // SAME layoutId as grid card
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  position: 'fixed',
+                  inset: 0,
+                  margin: 'auto',
+                  width: 'min(90vw, 600px)',
+                  height: 'min(90vh, 800px)',
+                  zIndex: 50,
+                  borderRadius: '12px',
+                  overflow: 'hidden'
+                }}
+                transition={{ layout: transition }}
+              >
+                {/* Rotation Wrapper */}
+                <motion.div
+                  initial={{ rotateY: 0 }}
+                  animate={{ rotateY: 180 }}
+                  exit={{ rotateY: 0 }}
+                  transition={transition}
+                  style={{
+                    transformStyle: 'preserve-3d',
+                    width: '100%',
+                    height: '100%'
+                  }}
+                >
+                  {/* Front Side */}
+                  <div style={{
+                    backfaceVisibility: 'hidden',
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%'
+                  }}>
+                    <GameCard game={game} />
+                  </div>
+                  
+                  {/* Back Side - Pre-rotated 180deg */}
+                  <div style={{
+                    backfaceVisibility: 'hidden',
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    transform: 'rotateY(180deg)'
+                  }}>
+                    <GameCardBack game={game} onDelete={onDelete} onClose={() => setIsExpanded(false)} />
+                  </div>
+                </motion.div>
+              </motion.div>
+            </>
+          )}
         </AnimatePresence>,
         document.body
       )}
