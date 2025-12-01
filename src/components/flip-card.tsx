@@ -90,10 +90,6 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                 key={`card-${game._id}`}
                 layoutId={`game-card-${game._id}`}
                 onClick={(e) => e.stopPropagation()}
-                initial={{ rotateY: 0 }}
-                animate={{ rotateY: 180 }}
-                exit={{ rotateY: 0 }}
-                transition={transition}
                 style={{
                   position: 'fixed',
                   inset: 0,
@@ -103,35 +99,48 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                   zIndex: 101,
                   borderRadius: '12px',
                   overflow: 'hidden',
-                  transformStyle: 'preserve-3d',
                   perspective: '1000px',
                   transformOrigin: 'center center'
                 }}
+                transition={{ layout: transition }}
               >
-                {/* Front Side */}
-                <div style={{
-                  backfaceVisibility: 'hidden',
-                  position: 'absolute',
-                  width: '100%',
-                  height: '100%',
-                  top: 0,
-                  left: 0
-                }}>
-                  <GameCard game={game} />
-                </div>
-                
-                {/* Back Side */}
-                <div style={{
-                  backfaceVisibility: 'hidden',
-                  position: 'absolute',
-                  width: '100%',
-                  height: '100%',
-                  top: 0,
-                  left: 0,
-                  transform: 'rotateY(180deg)'
-                }}>
-                  <GameCardBack game={game} onDelete={onDelete} onClose={() => setIsExpanded(false)} />
-                </div>
+                {/* Inner rotation wrapper - NOT in AnimatePresence, uses isExpanded state */}
+                <motion.div
+                  animate={{ rotateY: isExpanded ? 180 : 0 }}
+                  transition={transition}
+                  style={{
+                    transformStyle: 'preserve-3d',
+                    width: '100%',
+                    height: '100%',
+                    position: 'relative',
+                    transformOrigin: 'center center'
+                  }}
+                >
+                  {/* Front Side */}
+                  <div style={{
+                    backfaceVisibility: 'hidden',
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    top: 0,
+                    left: 0
+                  }}>
+                    <GameCard game={game} />
+                  </div>
+                  
+                  {/* Back Side */}
+                  <div style={{
+                    backfaceVisibility: 'hidden',
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    top: 0,
+                    left: 0,
+                    transform: 'rotateY(180deg)'
+                  }}>
+                    <GameCardBack game={game} onDelete={onDelete} onClose={() => setIsExpanded(false)} />
+                  </div>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
