@@ -518,10 +518,8 @@ export function GameList() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredAndSortedGames.map((game, index) => (
-                <div key={game._id} style={{ animationDelay: `${index * 0.05}s` }} className="fade-in">
-                  <FlipCard game={game} onDelete={handleDelete} />
-                </div>
+              {filteredAndSortedGames.map((game) => (
+                <FlipCard key={game._id} game={game} onDelete={handleDelete} />
               ))}
             </div>
           )}

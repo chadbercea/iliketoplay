@@ -55,7 +55,8 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
           cursor: isExpanded ? 'default' : 'pointer',
           visibility: isExpanded ? 'hidden' : 'visible',
           borderRadius: '12px',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          transformOrigin: 'center center'
         }}
         transition={{ layout: transition }}
       >
@@ -97,7 +98,8 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                   zIndex: 50,
                   borderRadius: '12px',
                   overflow: 'hidden',
-                  perspective: '1000px'
+                  perspective: '1000px',
+                  transformOrigin: 'center center'
                 }}
                 transition={{ layout: transition }}
               >
@@ -111,7 +113,8 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                     transformStyle: 'preserve-3d',
                     width: '100%',
                     height: '100%',
-                    position: 'relative'
+                    position: 'relative',
+                    transformOrigin: 'center center'
                   }}
                 >
                   {/* Front Side */}
