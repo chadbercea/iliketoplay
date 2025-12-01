@@ -3,7 +3,8 @@
 import { IGame } from "@/types/game";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { X } from "lucide-react";
+import Image from "next/image";
+import { X, Gamepad2 } from "lucide-react";
 
 interface GameCardBackProps {
   game: IGame;
@@ -31,9 +32,26 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
         </button>
       )}
 
-      {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto p-6">
-        <div className="flex flex-col gap-5">
+      {/* Artwork Header - 20% */}
+      <div className="relative w-full h-[20%] overflow-hidden bg-gradient-to-br from-gray-700 to-gray-900">
+        {game.coverImageUrl ? (
+          <Image
+            src={game.coverImageUrl}
+            alt={`${game.title} cover`}
+            fill
+            className="object-cover"
+            sizes="600px"
+          />
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <Gamepad2 className="w-12 h-12 text-gray-500" strokeWidth={1} />
+          </div>
+        )}
+      </div>
+
+      {/* Scrollable Content - 80% */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="flex flex-col gap-5 p-6">
         {/* Title */}
         <h2 className="text-2xl font-bold text-white border-b border-gray-700 pb-3">
           {game.title}

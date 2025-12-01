@@ -28,7 +28,12 @@ export function GameCard({ game }: GameCardProps) {
       )}
       
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent" />
+      <div 
+        className="absolute inset-0" 
+        style={{
+          background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 50%, transparent 70%)'
+        }}
+      />
       
       {/* Content at Bottom */}
       <div className="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-2">
