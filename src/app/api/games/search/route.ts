@@ -53,7 +53,8 @@ export async function GET(request: NextRequest) {
         year: cached.year,
         genre: cached.genre,
         coverImageUrl: cached.coverImageUrl,
-        notes: cached.description ? `Added from RAWG. ${cached.description.substring(0, 100)}...` : `Added from RAWG. Rating: ${cached.rating?.toFixed(2) || 'N/A'}/5`,
+        rating: cached.rating,
+        notes: "Added from RAWG",
       }));
 
       return NextResponse.json({
