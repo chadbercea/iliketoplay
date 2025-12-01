@@ -14,6 +14,7 @@ interface FlipCardProps {
 
 export function FlipCard({ game, onDelete }: FlipCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showGrid, setShowGrid] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
 
   useEffect(() => {
     if (isExpanded) {
+      setShowGrid(false);
       document.body.style.overflow = "hidden";
       
       const handleEscape = (e: KeyboardEvent) => {
@@ -35,6 +37,10 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
         document.body.style.overflow = "";
         document.removeEventListener("keydown", handleEscape);
       };
+    } else {
+      // Delay showing grid card until after exit animation completes
+      const timer = setTimeout(() => setShowGrid(true), 600);
+      return () => clearTimeout(timer);
     }
   }, [isExpanded]);
 
@@ -46,29 +52,36 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
 
   return (
     <>
-      {/* GRID CARD - Always rendered */}
-      <motion.div
-        layoutId={`game-card-${game._id}`}
-        onClick={() => !isExpanded && setIsExpanded(true)}
-        style={{
+      {/* GRID CARD - Hidden during animation */}
+      {showGrid && (
+        <motion.div
+          layoutId={`game-card-${game._id}`}
+          onClick={() => setIsExpanded(true)}
+          className="cursor-pointer"
+          style={{
+            aspectRatio: '9/16',
+            borderRadius: '12px',
+            overflow: 'hidden'
+          }}
+          transition={{ layout: transition }}
+        >
+          <GameCard game={game} />
+        </motion.div>
+      )}
+      
+      {/* Placeholder when grid card hidden */}
+      {!showGrid && (
+        <div style={{
           aspectRatio: '9/16',
-          cursor: isExpanded ? 'default' : 'pointer',
-          opacity: isExpanded ? 0 : 1,
-          pointerEvents: isExpanded ? 'none' : 'auto',
           borderRadius: '12px',
-          overflow: 'hidden'
-        }}
-        transition={{ 
-          layout: transition,
-          opacity: transition 
-        }}
-      >
-        <GameCard game={game} />
-      </motion.div>
+          border: '2px dashed rgba(255,255,255,0.2)',
+          backgroundColor: 'rgba(0,0,0,0.3)'
+        }} />
+      )}
 
-      {/* EXPANDED CARD - Portal always mounted, content conditional */}
+      {/* EXPANDED CARD - Portal */}
       {mounted && createPortal(
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           {isExpanded && (
             <>
               {/* Backdrop */}
@@ -90,7 +103,7 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
               {/* Expanded Card */}
               <motion.div
                 key={`card-${game._id}`}
-                layoutId={`game-card-${game._id}`}  // SAME layoutId as grid card
+                layoutId={`game-card-${game._id}`}
                 onClick={(e) => e.stopPropagation()}
                 style={{
                   position: 'fixed',
@@ -100,7 +113,8 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                   height: 'min(90vh, 800px)',
                   zIndex: 50,
                   borderRadius: '12px',
-                  overflow: 'hidden'
+                  overflow: 'hidden',
+                  perspective: '1000px'
                 }}
                 transition={{ layout: transition }}
               >
@@ -109,14 +123,12 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                   initial={{ rotateY: 0 }}
                   animate={{ rotateY: 180 }}
                   exit={{ rotateY: 0 }}
-                  transition={{
-                    duration: 0.6,
-                    ease: [0.32, 0.72, 0, 1]
-                  }}
+                  transition={transition}
                   style={{
                     transformStyle: 'preserve-3d',
                     width: '100%',
-                    height: '100%'
+                    height: '100%',
+                    position: 'relative'
                   }}
                 >
                   {/* Front Side */}
@@ -124,17 +136,21 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                     backfaceVisibility: 'hidden',
                     position: 'absolute',
                     width: '100%',
-                    height: '100%'
+                    height: '100%',
+                    top: 0,
+                    left: 0
                   }}>
                     <GameCard game={game} />
                   </div>
                   
-                  {/* Back Side - Pre-rotated 180deg */}
+                  {/* Back Side */}
                   <div style={{
                     backfaceVisibility: 'hidden',
                     position: 'absolute',
                     width: '100%',
                     height: '100%',
+                    top: 0,
+                    left: 0,
                     transform: 'rotateY(180deg)'
                   }}>
                     <GameCardBack game={game} onDelete={onDelete} onClose={() => setIsExpanded(false)} />
