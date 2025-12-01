@@ -92,15 +92,16 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                 onClick={(e) => e.stopPropagation()}
                 style={{
                   position: 'fixed',
-                  inset: 0,
-                  margin: 'auto',
+                  top: '50%',
+                  left: '50%',
+                  x: '-50%',
+                  y: '-50%',
                   width: 'min(90vw, 600px)',
                   height: 'min(90vh, 800px)',
                   zIndex: 101,
                   borderRadius: '12px',
                   overflow: 'hidden',
-                  perspective: '1000px',
-                  transformOrigin: 'center center'
+                  perspective: '1000px'
                 }}
                 transition={{ layout: transition }}
               >
