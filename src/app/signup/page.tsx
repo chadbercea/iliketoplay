@@ -87,11 +87,11 @@ export default function SignupPage() {
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">Gamer Tag</Label>
               <Input
                 id="name"
                 type="text"
-                placeholder="Your name"
+                placeholder="Player1"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
