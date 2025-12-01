@@ -33,7 +33,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
       )}
 
       {/* Blurred Artwork Header - 33% */}
-      <div className="relative w-full h-[33.333%] overflow-hidden bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
+      <div className="relative w-full h-[33.333%] overflow-hidden bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center p-2.5">
         {game.coverImageUrl ? (
           <>
             {/* Blurred background layer */}
@@ -49,7 +49,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
             <img
               src={game.coverImageUrl}
               alt={`${game.title} cover`}
-              className="relative z-10 max-w-full max-h-full object-contain m-2.5"
+              className="relative z-10 max-w-full max-h-full object-contain"
             />
           </>
         ) : (
