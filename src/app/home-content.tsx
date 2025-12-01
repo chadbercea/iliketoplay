@@ -9,10 +9,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function HomeContent() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-black">
       <header className="bg-black border-b shadow-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
-          <h1 className="text-2xl font-bold text-foreground">I Like To Play</h1>
+          <h1 className="text-2xl font-bold text-white">I Like To Play</h1>
           <div className="flex items-center gap-4">
             <Link href="/games/new">
               <Button className="min-h-[44px]" aria-label="Add new game to collection">Add Game</Button>
@@ -21,7 +21,7 @@ export default function HomeContent() {
           </div>
         </div>
       </header>
-      <main className="p-8">
+      <main className="p-8 bg-black">
         <div className="max-w-7xl mx-auto space-y-8">
           <Tabs defaultValue="games" className="w-full">
             <div className="flex justify-between items-center gap-4 flex-wrap">
