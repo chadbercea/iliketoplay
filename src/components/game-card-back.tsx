@@ -34,10 +34,11 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
     }
   }
 
-  // Format rating to 1 decimal place
-  const displayRating = rating?.toFixed(1);
+  // Round to 1 decimal place for display AND color determination
+  const roundedRating = rating ? Math.round(rating * 10) / 10 : undefined;
+  const displayRating = roundedRating?.toFixed(1);
 
-  // Get badge color based on rating
+  // Get badge color based on ROUNDED rating
   const getBadgeColor = (ratingValue: number) => {
     if (ratingValue === 5.0) return '#3b82f6';  // Blue
     if (ratingValue >= 4.0) return '#66cc33';   // Green
@@ -95,7 +96,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
           </h2>
           
           {/* RAWG Rating Badge */}
-          {rating && displayRating && (
+          {roundedRating && displayRating && (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -105,7 +106,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
                       width: '50px',
                       height: '50px',
                       borderRadius: '8px',
-                      backgroundColor: getBadgeColor(rating)
+                      backgroundColor: getBadgeColor(roundedRating)
                     }}
                   >
                     <span className="text-white text-xl font-bold">
