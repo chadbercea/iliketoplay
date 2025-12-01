@@ -114,7 +114,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
                     </span>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent>
+                <TooltipContent side="left">
                   <p>RAWG Rating: {displayRating}/5</p>
                 </TooltipContent>
               </Tooltip>
