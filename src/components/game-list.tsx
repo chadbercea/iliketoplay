@@ -421,7 +421,7 @@ export function GameList() {
                         }}
                         className={cn(
                           "w-full text-left px-4 py-3 rounded-lg min-h-[44px] transition-colors",
-                          sortBy === option.value ? "bg-primary text-primary-foreground" : "hover:bg-muted"
+                          sortBy === option.value ? "bg-white text-black" : "hover:bg-white/10"
                         )}
                       >
                         {option.label}
