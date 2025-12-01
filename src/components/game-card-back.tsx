@@ -20,7 +20,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
   };
 
   return (
-    <div className="w-full h-full bg-gray-900 rounded-xl overflow-hidden shadow-2xl flex flex-col relative">
+    <div className="w-full h-full bg-gray-900 rounded-[40px] overflow-hidden shadow-2xl flex flex-col relative">
       {/* Close Button */}
       {onClose && (
         <button
