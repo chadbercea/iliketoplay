@@ -77,7 +77,6 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
               src={game.coverImageUrl}
               alt={`${game.title} cover`}
               className="relative z-10 max-w-full max-h-full object-contain rounded-[20px]"
-              style={{ filter: 'grayscale(100%)' }}
             />
           </>
         ) : (
