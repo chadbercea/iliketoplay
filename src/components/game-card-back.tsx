@@ -39,7 +39,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
             src={game.coverImageUrl}
             alt={`${game.title} cover`}
             fill
-            className="object-cover"
+            className="object-contain"
             style={{ filter: 'blur(8px)' }}
             sizes="600px"
           />
