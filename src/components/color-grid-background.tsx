@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const colors = [
   [255, 0, 0],     // Red
@@ -30,11 +30,17 @@ interface Square {
 }
 
 export function ColorGridBackground() {
+  const [mounted, setMounted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const squaresRef = useRef<Map<string, Square>>(new Map());
   const animationFrameRef = useRef<number | undefined>(undefined);
   
   useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  useEffect(() => {
+    if (!mounted) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     
@@ -148,7 +154,9 @@ export function ColorGridBackground() {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, []);
+  }, [mounted]);
+  
+  if (!mounted) return null;
   
   return (
     <canvas
