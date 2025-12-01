@@ -52,7 +52,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
       {onClose && (
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
+          className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/60 backdrop-blur-sm hover:bg-black/80 hover:scale-110 transition-all duration-200 flex items-center justify-center"
           aria-label="Close"
         >
           <X className="w-5 h-5 text-white" />
