@@ -68,12 +68,12 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
 
       {/* EXPANDED CARD - Portal always mounted, content conditional */}
       {mounted && createPortal(
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {isExpanded && (
             <>
               {/* Backdrop */}
               <motion.div
-                key="backdrop"
+                key={`backdrop-${game._id}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 0.6 }}
                 exit={{ opacity: 0 }}
@@ -89,7 +89,7 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
               
               {/* Expanded Card */}
               <motion.div
-                key="card"
+                key={`card-${game._id}`}
                 layoutId={`game-card-${game._id}`}  // SAME layoutId as grid card
                 onClick={(e) => e.stopPropagation()}
                 style={{
@@ -106,10 +106,11 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
               >
                 {/* Rotation Wrapper */}
                 <motion.div
-                  initial={{ rotateY: 0 }}
-                  animate={{ rotateY: 180 }}
-                  exit={{ rotateY: 0 }}
-                  transition={transition}
+                  animate={{ rotateY: isExpanded ? 180 : 0 }}
+                  transition={{
+                    duration: 0.6,
+                    ease: [0.32, 0.72, 0, 1]
+                  }}
                   style={{
                     transformStyle: 'preserve-3d',
                     width: '100%',
