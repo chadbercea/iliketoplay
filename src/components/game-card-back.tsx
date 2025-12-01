@@ -25,14 +25,23 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
     }
   };
 
+  // Get rating from field or parse from notes (fallback for old games)
+  let rating = game.rating;
+  if (!rating && game.notes) {
+    const ratingMatch = game.notes.match(/Rating:\s*([\d.]+)\/5/);
+    if (ratingMatch) {
+      rating = parseFloat(ratingMatch[1]);
+    }
+  }
+
   // Format rating to 1 decimal place
-  const displayRating = game.rating?.toFixed(1);
+  const displayRating = rating?.toFixed(1);
 
   // Get badge color based on rating
-  const getBadgeColor = (rating: number) => {
-    if (rating === 5.0) return '#3b82f6';  // Blue
-    if (rating >= 4.0) return '#66cc33';   // Green
-    if (rating >= 3.0) return '#ffcc33';   // Yellow
+  const getBadgeColor = (ratingValue: number) => {
+    if (ratingValue === 5.0) return '#3b82f6';  // Blue
+    if (ratingValue >= 4.0) return '#66cc33';   // Green
+    if (ratingValue >= 3.0) return '#ffcc33';   // Yellow
     return '#ff0000';                      // Red
   };
 
@@ -86,7 +95,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
           </h2>
           
           {/* RAWG Rating Badge */}
-          {game.rating && displayRating && (
+          {rating && displayRating && (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -96,7 +105,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
                       width: '50px',
                       height: '50px',
                       borderRadius: '8px',
-                      backgroundColor: getBadgeColor(game.rating)
+                      backgroundColor: getBadgeColor(rating)
                     }}
                   >
                     <span className="text-white text-xl font-bold">
