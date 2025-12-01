@@ -40,7 +40,7 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
 
   const transition = {
     duration: 0.6,
-    ease: [0.32, 0.72, 0, 1]
+    ease: [0.32, 0.72, 0, 1] as [number, number, number, number]
   };
 
   // ============================================================================
@@ -49,6 +49,7 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
   const cardContent = (
     <motion.div
       animate={{ rotateY: isExpanded ? 180 : 0 }}
+      exit={{ rotateY: 0 }}
       transition={transition}
       style={{
         transformStyle: 'preserve-3d',
