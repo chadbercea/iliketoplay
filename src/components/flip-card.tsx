@@ -46,14 +46,13 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
 
   return (
     <>
-      {/* GRID CARD - Always rendered, hidden when expanded */}
+      {/* GRID CARD - Always visible, portal card covers it */}
       <motion.div
         layoutId={`game-card-${game._id}`}
         onClick={() => !isExpanded && setIsExpanded(true)}
         style={{
           aspectRatio: '9/16',
           cursor: isExpanded ? 'default' : 'pointer',
-          visibility: isExpanded ? 'hidden' : 'visible',
           borderRadius: '12px',
           overflow: 'hidden',
           transformOrigin: 'center center'
