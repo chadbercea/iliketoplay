@@ -92,12 +92,10 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                 onClick={(e) => e.stopPropagation()}
                 style={{
                   position: 'fixed',
-                  top: '50%',
-                  left: '50%',
-                  x: '-50%',
-                  y: '-50%',
+                  inset: 0,
                   width: 'min(90vw, 600px)',
                   height: 'min(90vh, 800px)',
+                  margin: 'auto',
                   zIndex: 101,
                   borderRadius: '12px',
                   overflow: 'hidden',
@@ -105,16 +103,15 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                 }}
                 transition={{ layout: transition }}
               >
-                {/* Inner rotation wrapper - NOT in AnimatePresence, uses isExpanded state */}
                 <motion.div
-                  animate={{ rotateY: isExpanded ? 180 : 0 }}
+                  initial={{ rotateY: 0 }}
+                  animate={{ rotateY: 180 }}
+                  exit={{ rotateY: 0 }}
                   transition={transition}
                   style={{
                     transformStyle: 'preserve-3d',
                     width: '100%',
-                    height: '100%',
-                    position: 'relative',
-                    transformOrigin: 'center center'
+                    height: '100%'
                   }}
                 >
                   {/* Front Side */}
