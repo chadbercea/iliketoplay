@@ -11,7 +11,7 @@ interface GameCardProps {
 
 export function GameCard({ game }: GameCardProps) {
   return (
-    <div className="relative w-full max-w-[300px] aspect-[9/16] rounded-[40px] overflow-hidden bg-gradient-to-br from-gray-700 to-gray-900 shadow-lg">
+    <div className="relative w-full max-w-[300px] aspect-[9/16] rounded-[24px] overflow-hidden bg-gradient-to-br from-gray-700 to-gray-900 shadow-lg">
       {/* Cover Image Background */}
       {game.coverImageUrl ? (
         <Image
