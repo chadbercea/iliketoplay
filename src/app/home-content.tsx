@@ -15,7 +15,7 @@ export default function HomeContent() {
           <h1 className="text-2xl font-bold text-white">I Like To Play</h1>
           <div className="flex items-center gap-4">
             <Link href="/games/new">
-              <Button className="min-h-[44px]" aria-label="Add new game to collection">Add Game</Button>
+              <Button variant="outline" className="min-h-[44px]" aria-label="Add new game to collection">Add Game</Button>
             </Link>
             <UserMenu />
           </div>
