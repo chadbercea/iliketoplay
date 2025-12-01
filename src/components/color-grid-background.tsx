@@ -62,11 +62,10 @@ export function ColorGridBackground() {
     resize();
     window.addEventListener('resize', resize);
     
-    // Mouse tracking
+    // Mouse tracking on window (not canvas, since canvas is at z-index: -1)
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const x = e.clientX;
+      const y = e.clientY;
       
       const col = Math.floor(x / squareSize);
       const row = Math.floor(y / squareSize);
@@ -96,7 +95,7 @@ export function ColorGridBackground() {
       }
     };
     
-    canvas.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove);
     
     // Animation loop
     const animate = () => {
@@ -149,7 +148,7 @@ export function ColorGridBackground() {
     // Cleanup
     return () => {
       window.removeEventListener('resize', resize);
-      canvas.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mousemove', handleMouseMove);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
@@ -170,7 +169,7 @@ export function ColorGridBackground() {
         width: '100vw',
         height: '100vh',
         zIndex: -1,
-        cursor: 'default'
+        pointerEvents: 'none'
       }}
     />
   );
