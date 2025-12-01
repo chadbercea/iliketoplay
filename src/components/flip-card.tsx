@@ -106,7 +106,9 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
               >
                 {/* Rotation Wrapper */}
                 <motion.div
-                  animate={{ rotateY: isExpanded ? 180 : 0 }}
+                  initial={{ rotateY: 0 }}
+                  animate={{ rotateY: 180 }}
+                  exit={{ rotateY: 0 }}
                   transition={{
                     duration: 0.6,
                     ease: [0.32, 0.72, 0, 1]
