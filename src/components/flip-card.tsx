@@ -96,7 +96,6 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
         layoutId={`game-card-${game._id}`}
         onClick={() => !isExpanded && setIsExpanded(true)}
         style={{
-          width: '50%',
           aspectRatio: '9/16',
           cursor: isExpanded ? 'default' : 'pointer',
           opacity: isExpanded ? 0 : 1,              // Hide when expanded
