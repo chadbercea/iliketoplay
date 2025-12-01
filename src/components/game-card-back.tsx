@@ -49,7 +49,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
             <img
               src={game.coverImageUrl}
               alt={`${game.title} cover`}
-              className="relative z-10 max-w-full max-h-full object-contain"
+              className="relative z-10 max-w-full max-h-full object-contain m-2.5"
             />
           </>
         ) : (
