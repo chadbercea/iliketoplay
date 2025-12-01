@@ -82,7 +82,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
           </>
         ) : (
           <div className="flex items-center justify-center h-full">
-            <Gamepad2 className="w-12 h-12 text-gray-500" strokeWidth={1} />
+            <Gamepad2 className="w-12 h-12 text-white opacity-20" strokeWidth={1} />
           </div>
         )}
       </div>
