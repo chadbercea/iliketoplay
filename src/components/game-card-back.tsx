@@ -5,6 +5,12 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { X, Gamepad2 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface GameCardBackProps {
   game: IGame;
@@ -17,6 +23,17 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
     if (confirm("Are you sure you want to delete this game?")) {
       onDelete(game._id!);
     }
+  };
+
+  // Format rating to 1 decimal place
+  const displayRating = game.rating?.toFixed(1);
+
+  // Get badge color based on rating
+  const getBadgeColor = (rating: number) => {
+    if (rating === 5.0) return '#3b82f6';  // Blue
+    if (rating >= 4.0) return '#66cc33';   // Green
+    if (rating >= 3.0) return '#ffcc33';   // Yellow
+    return '#ff0000';                      // Red
   };
 
   return (
@@ -62,10 +79,38 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
       {/* Scrollable Content - 67% */}
       <div className="flex-1 overflow-y-auto">
         <div className="flex flex-col gap-5 p-6">
-        {/* Title */}
-        <h2 className="text-2xl font-bold text-white border-b border-gray-700 pb-3">
-          {game.title}
-        </h2>
+        {/* Title + Rating Badge */}
+        <div className="flex justify-between items-center gap-3 border-b border-gray-700 pb-3">
+          <h2 className="text-2xl font-bold text-white flex-grow">
+            {game.title}
+          </h2>
+          
+          {/* RAWG Rating Badge */}
+          {game.rating && displayRating && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div 
+                    className="flex items-center justify-center flex-shrink-0 cursor-help"
+                    style={{
+                      width: '50px',
+                      height: '50px',
+                      borderRadius: '8px',
+                      backgroundColor: getBadgeColor(game.rating)
+                    }}
+                  >
+                    <span className="text-white text-xl font-bold">
+                      {displayRating}
+                    </span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>RAWG Rating: {displayRating}/5</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+        </div>
 
         {/* Genre */}
         {game.genre && (
@@ -102,11 +147,11 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
       </div>
 
       {/* Action Buttons - Always at Bottom */}
-      <div className="flex gap-3 p-4 border-t border-gray-700 bg-gray-800/50">
+      <div className="flex gap-3 p-6 border-t border-gray-700 bg-gray-800/50">
         <Link href={`/games/${game._id}/edit`} className="flex-1">
           <Button
             variant="outline"
-            className="w-full min-h-[44px]"
+            className="w-full min-h-[44px] rounded-full"
             aria-label={`Edit ${game.title}`}
           >
             Edit
@@ -115,7 +160,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
         <Button
           variant="destructive"
           onClick={handleDelete}
-          className="flex-1 min-h-[44px]"
+          className="flex-1 min-h-[44px] rounded-full"
           aria-label={`Delete ${game.title}`}
         >
           Delete
