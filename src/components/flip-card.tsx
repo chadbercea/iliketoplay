@@ -100,7 +100,7 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
           cursor: isExpanded ? 'default' : 'pointer',
           opacity: isExpanded ? 0 : 1,              // Hide when expanded
           pointerEvents: isExpanded ? 'none' : 'auto',
-          borderRadius: '40px',
+          borderRadius: '24px',
           overflow: 'hidden'
         }}
         transition={{ layout: transition }}
