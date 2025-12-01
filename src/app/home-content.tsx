@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export default function HomeContent() {
   return (
     <div className="min-h-screen">
-      <header className="bg-background border-b shadow-sm sticky top-0 z-10">
+      <header className="bg-black border-b shadow-sm sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
           <h1 className="text-2xl font-bold text-foreground">I Like To Play</h1>
           <div className="flex items-center gap-4">
