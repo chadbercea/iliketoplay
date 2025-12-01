@@ -145,7 +145,7 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
                   inset: 0,
                   margin: 'auto',
                   width: 'min(90vw, 600px)',
-                  height: 'min(90vh, 800px)',
+                  aspectRatio: '9/16',
                   zIndex: 101,
                   borderRadius: '12px',
                   overflow: 'hidden'
