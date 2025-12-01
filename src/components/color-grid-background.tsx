@@ -32,7 +32,7 @@ interface Square {
 export function ColorGridBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const squaresRef = useRef<Map<string, Square>>(new Map());
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | undefined>(undefined);
   
   useEffect(() => {
     const canvas = canvasRef.current;
