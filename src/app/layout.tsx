@@ -3,6 +3,7 @@ import "./globals.css";
 import SessionProvider from "@/components/session-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { ColorGridBackground } from "@/components/color-grid-background";
 
 export const metadata: Metadata = {
   title: "I Like To Play",
@@ -17,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
+        <ColorGridBackground />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

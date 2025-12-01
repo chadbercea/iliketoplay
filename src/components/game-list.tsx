@@ -271,7 +271,7 @@ export function GameList() {
       {games.length > 0 && (
         <>
           {/* Sticky Search Bar */}
-          <div className="sticky top-0 z-20 bg-background pb-4 space-y-4">
+          <div className="sticky top-0 z-20 pb-4 space-y-4">
             {/* Search and Action Buttons */}
             <div className="flex gap-2">
               <div className="relative flex-1">
@@ -421,7 +421,7 @@ export function GameList() {
                         }}
                         className={cn(
                           "w-full text-left px-4 py-3 rounded-lg min-h-[44px] transition-colors",
-                          sortBy === option.value ? "bg-primary text-primary-foreground" : "hover:bg-muted"
+                          sortBy === option.value ? "bg-white text-black" : "hover:bg-white/10"
                         )}
                       >
                         {option.label}
@@ -433,7 +433,7 @@ export function GameList() {
             </div>
 
             {/* Filter Presets */}
-            <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1">
+            <div className="flex gap-2 overflow-x-auto py-2 -mx-1 px-1">
               {FILTER_PRESETS.map((preset) => (
                 <Button
                   key={preset.id}

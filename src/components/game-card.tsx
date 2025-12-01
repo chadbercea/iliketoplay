@@ -11,7 +11,7 @@ interface GameCardProps {
 
 export function GameCard({ game }: GameCardProps) {
   return (
-    <div className="relative w-full max-w-[300px] aspect-[9/16] rounded-[24px] overflow-hidden bg-gradient-to-br from-gray-700 to-gray-900 shadow-lg">
+    <div className="relative w-full max-w-[300px] aspect-[9/16] rounded-[24px] overflow-hidden bg-black shadow-lg">
       {/* Cover Image Background */}
       {game.coverImageUrl ? (
         <Image
@@ -23,7 +23,7 @@ export function GameCard({ game }: GameCardProps) {
         />
       ) : (
         <div className="flex items-center justify-center h-full">
-          <Gamepad2 className="w-20 h-20 text-gray-500" strokeWidth={1} />
+          <Gamepad2 className="w-20 h-20 text-white opacity-20" strokeWidth={1} />
         </div>
       )}
       

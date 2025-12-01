@@ -47,7 +47,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
   };
 
   return (
-    <div className="w-full h-full bg-gray-900 rounded-[40px] overflow-hidden shadow-2xl flex flex-col relative">
+    <div className="w-full h-full bg-black rounded-[40px] overflow-hidden shadow-2xl flex flex-col relative">
       {/* Close Button */}
       {onClose && (
         <button
@@ -60,7 +60,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
       )}
 
       {/* Blurred Artwork Header - 33% */}
-      <div className="relative w-full h-[33.333%] overflow-hidden bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center p-2.5">
+      <div className="relative w-full h-[33.333%] overflow-hidden bg-black flex items-center justify-center p-2.5">
         {game.coverImageUrl ? (
           <>
             {/* Blurred background layer */}
@@ -69,7 +69,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
               alt=""
               fill
               className="object-cover"
-              style={{ filter: 'blur(8px)' }}
+              style={{ filter: 'blur(8px) grayscale(100%)' }}
               sizes="600px"
             />
             {/* Sharp foreground layer - full image visible */}
@@ -81,7 +81,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
           </>
         ) : (
           <div className="flex items-center justify-center h-full">
-            <Gamepad2 className="w-12 h-12 text-gray-500" strokeWidth={1} />
+            <Gamepad2 className="w-12 h-12 text-white opacity-20" strokeWidth={1} />
           </div>
         )}
       </div>
@@ -90,7 +90,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
       <div className="flex-1 overflow-y-auto">
         <div className="flex flex-col gap-5 p-6">
         {/* Title + Rating Badge */}
-        <div className="flex justify-between items-center gap-3 border-b border-gray-700 pb-3">
+        <div className="flex justify-between items-center gap-3 pb-3" style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
           <h2 className="text-2xl font-bold text-white flex-grow">
             {game.title}
           </h2>
@@ -125,21 +125,21 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
         {/* Genre */}
         {game.genre && (
           <div className="flex flex-col gap-1">
-            <div className="text-xs text-gray-400 uppercase tracking-wider">Genre</div>
+            <div className="text-xs text-white uppercase tracking-wider" style={{ opacity: 0.6 }}>Genre</div>
             <div className="text-white text-base">{game.genre}</div>
           </div>
         )}
 
         {/* Platform */}
         <div className="flex flex-col gap-1">
-          <div className="text-xs text-gray-400 uppercase tracking-wider">Platform</div>
+          <div className="text-xs text-white uppercase tracking-wider" style={{ opacity: 0.6 }}>Platform</div>
           <div className="text-white text-base">{game.platform}</div>
         </div>
 
         {/* Year */}
         {game.year && (
           <div className="flex flex-col gap-1">
-            <div className="text-xs text-gray-400 uppercase tracking-wider">Year</div>
+            <div className="text-xs text-white uppercase tracking-wider" style={{ opacity: 0.6 }}>Year</div>
             <div className="text-white text-base">{game.year}</div>
           </div>
         )}
@@ -147,8 +147,8 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
         {/* Personal Notes */}
         {game.notes && (
           <div className="flex flex-col gap-1">
-            <div className="text-xs text-gray-400 uppercase tracking-wider">Personal Notes</div>
-            <div className="p-3 bg-white/5 border-l-4 border-gray-600 rounded italic text-gray-400">
+            <div className="text-xs text-white uppercase tracking-wider" style={{ opacity: 0.6 }}>Personal Notes</div>
+            <div className="p-3 bg-white/5 rounded italic text-white" style={{ borderLeft: '4px solid rgba(255, 255, 255, 0.2)' }}>
               {game.notes}
             </div>
           </div>
@@ -157,7 +157,7 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
       </div>
 
       {/* Action Buttons - Always at Bottom */}
-      <div className="flex gap-3 p-6 border-t border-gray-700 bg-gray-800/50">
+      <div className="flex gap-3 p-6 bg-black" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
         <Link href={`/games/${game._id}/edit`} className="flex-1">
           <Button
             variant="outline"
