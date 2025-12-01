@@ -14,7 +14,6 @@ interface FlipCardProps {
 
 export function FlipCard({ game, onDelete }: FlipCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [showGrid, setShowGrid] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -23,7 +22,6 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
 
   useEffect(() => {
     if (isExpanded) {
-      setShowGrid(false);
       document.body.style.overflow = "hidden";
       
       const handleEscape = (e: KeyboardEvent) => {
@@ -37,10 +35,6 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
         document.body.style.overflow = "";
         document.removeEventListener("keydown", handleEscape);
       };
-    } else {
-      // Delay showing grid card until after exit animation completes
-      const timer = setTimeout(() => setShowGrid(true), 600);
-      return () => clearTimeout(timer);
     }
   }, [isExpanded]);
 
@@ -52,32 +46,21 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
 
   return (
     <>
-      {/* GRID CARD - Hidden during animation */}
-      {showGrid && (
-        <motion.div
-          layoutId={`game-card-${game._id}`}
-          onClick={() => setIsExpanded(true)}
-          className="cursor-pointer"
-          style={{
-            aspectRatio: '9/16',
-            borderRadius: '12px',
-            overflow: 'hidden'
-          }}
-          transition={{ layout: transition }}
-        >
-          <GameCard game={game} />
-        </motion.div>
-      )}
-      
-      {/* Placeholder when grid card hidden */}
-      {!showGrid && (
-        <div style={{
+      {/* GRID CARD - Always rendered, hidden when expanded */}
+      <motion.div
+        layoutId={`game-card-${game._id}`}
+        onClick={() => !isExpanded && setIsExpanded(true)}
+        style={{
           aspectRatio: '9/16',
+          cursor: isExpanded ? 'default' : 'pointer',
+          visibility: isExpanded ? 'hidden' : 'visible',
           borderRadius: '12px',
-          border: '2px dashed rgba(255,255,255,0.2)',
-          backgroundColor: 'rgba(0,0,0,0.3)'
-        }} />
-      )}
+          overflow: 'hidden'
+        }}
+        transition={{ layout: transition }}
+      >
+        <GameCard game={game} />
+      </motion.div>
 
       {/* EXPANDED CARD - Portal */}
       {mounted && createPortal(
