@@ -145,7 +145,8 @@ export function rawgToGameData(rawgGame: RAWGGame, platformFilter?: string) {
     genre,
     status: "owned" as const,
     coverImageUrl: rawgGame.background_image,
-    notes: `Added from RAWG. Rating: ${rawgGame.rating}/5`,
+    rating: rawgGame.rating,
+    notes: "Added from RAWG",
   };
 }
 

@@ -13,6 +13,7 @@ interface SearchResult {
   year?: number;
   genre?: string;
   coverImageUrl?: string;
+  rating?: number;
   notes?: string;
 }
 

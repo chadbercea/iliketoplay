@@ -28,6 +28,7 @@ export function GameForm({ game, isEdit = false }: GameFormProps) {
     genre: game?.genre || "",
     status: game?.status || "owned",
     coverImageUrl: game?.coverImageUrl || "",
+    rating: game?.rating || undefined,
     notes: game?.notes || "",
     condition: game?.condition || undefined,
     purchaseInfo: {
@@ -45,6 +46,7 @@ export function GameForm({ game, isEdit = false }: GameFormProps) {
       genre: searchResult.genre,
       status: "owned",
       coverImageUrl: searchResult.coverImageUrl,
+      rating: searchResult.rating,
       notes: searchResult.notes || "",
       condition: undefined,
       purchaseInfo: {
