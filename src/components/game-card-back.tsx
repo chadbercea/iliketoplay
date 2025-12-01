@@ -57,40 +57,6 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
           {game.title}
         </h2>
 
-        {/* Metacritic Score */}
-        {game.metacriticScore && (
-          <div className="flex flex-col gap-1">
-            <div className="text-xs text-gray-400 uppercase tracking-wider">Metacritic Score</div>
-            <div>
-              <span className="inline-block px-3 py-1.5 bg-green-600 text-black font-bold rounded text-lg">
-                {game.metacriticScore}
-              </span>
-            </div>
-          </div>
-        )}
-
-        {/* Publisher */}
-        {game.publisher && (
-          <div className="flex flex-col gap-1">
-            <div className="text-xs text-gray-400 uppercase tracking-wider">Publisher</div>
-            <div className="text-white text-base">{game.publisher}</div>
-          </div>
-        )}
-
-        {/* Release Date */}
-        {game.releaseDate && (
-          <div className="flex flex-col gap-1">
-            <div className="text-xs text-gray-400 uppercase tracking-wider">Release Date</div>
-            <div className="text-white text-base">
-              {new Date(game.releaseDate).toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-              })}
-            </div>
-          </div>
-        )}
-
         {/* Genre */}
         {game.genre && (
           <div className="flex flex-col gap-1">
@@ -110,14 +76,6 @@ export function GameCardBack({ game, onDelete, onClose }: GameCardBackProps) {
           <div className="flex flex-col gap-1">
             <div className="text-xs text-gray-400 uppercase tracking-wider">Year</div>
             <div className="text-white text-base">{game.year}</div>
-          </div>
-        )}
-
-        {/* Description */}
-        {game.description && (
-          <div className="flex flex-col gap-1">
-            <div className="text-xs text-gray-400 uppercase tracking-wider">Description</div>
-            <div className="text-gray-300 text-base leading-relaxed">{game.description}</div>
           </div>
         )}
 
