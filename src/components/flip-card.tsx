@@ -58,7 +58,10 @@ export function FlipCard({ game, onDelete }: FlipCardProps) {
           borderRadius: '12px',
           overflow: 'hidden'
         }}
-        transition={{ layout: transition }}
+        transition={{ 
+          layout: transition,
+          opacity: transition 
+        }}
       >
         <GameCard game={game} />
       </motion.div>
