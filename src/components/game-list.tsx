@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { IGame } from "@/types/game";
-import { GameCard } from "./game-card";
+import { FlipCard } from "./flip-card";
 import { GameCardSkeleton } from "./game-card-skeleton";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -517,11 +517,9 @@ export function GameList() {
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredAndSortedGames.map((game, index) => (
-                <div key={game._id} style={{ animationDelay: `${index * 0.05}s` }} className="fade-in">
-                  <GameCard game={game} onDelete={handleDelete} />
-                </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4 lg:gap-6">
+              {filteredAndSortedGames.map((game) => (
+                <FlipCard key={game._id} game={game} onDelete={handleDelete} />
               ))}
             </div>
           )}
