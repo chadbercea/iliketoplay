@@ -18,6 +18,7 @@ export interface IGame {
   status: GameStatus;
   coverImageUrl?: string;
   notes?: string;
+  rating?: number;
   condition?: GameCondition;
   purchaseInfo?: PurchaseInfo;
   createdAt?: Date;

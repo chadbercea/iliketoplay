@@ -46,6 +46,11 @@ const GameSchema = new Schema<IGame>(
     notes: {
       type: String,
     },
+    rating: {
+      type: Number,
+      min: 0,
+      max: 5,
+    },
     condition: {
       type: String,
       enum: ["mint", "excellent", "good", "fair", "poor"],
