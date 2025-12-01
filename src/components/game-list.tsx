@@ -271,7 +271,7 @@ export function GameList() {
       {games.length > 0 && (
         <>
           {/* Sticky Search Bar */}
-          <div className="sticky top-0 z-20 bg-black pb-4 space-y-4">
+          <div className="sticky top-0 z-20 pb-4 space-y-4">
             {/* Search and Action Buttons */}
             <div className="flex gap-2">
               <div className="relative flex-1">
